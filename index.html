@@ -104,9 +104,9 @@
       font-family: 'Mansalva', cursive;
       font-size: 1.3rem;
       color: #2b1e23;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-weight: 400;
-      line-height: 1.2;
+      line-height: 1.25;
       max-width: 440px;
     }
 
@@ -402,24 +402,37 @@
 
       #step1 .memo-card {
         max-width: 100%;
-        padding: 16% 12% 11% 12%;
+        padding: 14% 10% 8% 10%;
       }
 
       .sub-subtitle {
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         margin-bottom: 2px;
       }
 
       .title {
-        font-size: 2.15rem;
-        margin-bottom: 6px;
+        font-size: 2.2rem;
+        margin-bottom: 8px;
         line-height: 1.05;
       }
 
+      /* Deskripsi Halaman 1 Diberikan Jarak Tambahan */
       .description {
-        font-size: 0.78rem;
-        margin-bottom: 8px;
-        line-height: 1.15;
+        font-size: 0.82rem;
+        margin-bottom: 16px !important;
+        line-height: 1.25;
+        max-width: 260px;
+      }
+
+      /* Tombol Utama Halaman 1 di HP (Ukuran Diperbesar) */
+      #step1 .btn-journey {
+        width: 100% !important;
+        max-width: 280px !important;
+        height: 46px !important;
+        font-size: 1.2rem !important;
+        border-radius: 24px !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
       }
 
       /* Teks Judul & Subtitle Halaman 2 di HP */
@@ -463,14 +476,14 @@
         margin: 6px 0 8px 0 !important;
       }
 
-      /* KONSISTENSI SEMUA TOMBOL UTAMA DI HP (DI-SAMAKAN PRESIS) */
-      .btn-journey,
-      .btn-white {
+      /* Tombol Halaman 2 di HP */
+      .clean-container .btn-journey,
+      .clean-container .btn-white {
         width: 100% !important;
         max-width: 260px !important;
-        height: 40px !important;
-        font-size: 1rem !important;
-        border-radius: 20px !important;
+        height: 42px !important;
+        font-size: 1.05rem !important;
+        border-radius: 22px !important;
         margin-top: 2px !important;
         margin-bottom: 6px !important;
       }
@@ -490,7 +503,7 @@
     <div class="memo-card">
       <div class="sub-subtitle">daem's Birthday Event</div>
       <h1 class="title">Keepsakes<br>in Bloom</h1>
-      <p class="description">Let your cherished moments bloom among the stars in a photostrip ⭐🎞️</p>
+      <p class="description">Let your cherished moments bloom<br>among the stars in a photostrip ⭐🎞️</p>
       <button class="btn-journey" onclick="startCapture()">Begin the Journey</button>
     </div>
   </div>
