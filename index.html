@@ -63,7 +63,7 @@
       z-index: 2;
     }
 
-    /* HALAMAN 2 & 3 */
+    /* HALAMAN 2 */
     .clean-container {
       background-color: #f2f2e6;
       width: 92%;
@@ -369,146 +369,28 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.12);
     }
 
+    /* Definisi Filter CSS */
     .filter-classic    { filter: none; }
     .filter-bloom      { filter: brightness(1.08) contrast(0.9) saturate(1.15); }
     .filter-softglow   { filter: brightness(1.12) contrast(0.85) saturate(0.8); }
     .filter-vintage    { filter: brightness(0.95) contrast(1.05) sepia(0.25) saturate(0.85); }
     .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
 
-    .tabs {
-      display: flex;
-      gap: 6px;
-      width: 100%;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 8px;
-      border-radius: 20px;
-      border: 1px solid #f5a6b9;
-      background: #ffffff;
-      color: #2b1e23;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-
-    .tab-btn.active {
-      background: #f5a6b9;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .photostrip-wrapper {
-      background: #fce4ec;
-      padding: 12px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      position: relative;
-      margin-bottom: 15px;
-      overflow: hidden;
-    }
-
-    .photo-slot-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .photo-slot {
-      width: 100%;
-      height: 155px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      border: 2px solid #ffffff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .photo-slot.selected-slot {
-      outline: 3px solid #f5a6b9;
-    }
-
-    .photo-slot img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(1) rotate(0deg);
-      max-width: none;
-      width: 100%;
-      height: auto;
-      transform-origin: center center;
-    }
-
-    .strip-footer {
-      background: linear-gradient(180deg, #7b9acc 0%, #617ca6 100%);
-      padding: 12px;
-      border-radius: 10px;
-      color: #fff;
-    }
-
-    .strip-footer h3 {
-      font-family: 'Gochi Hand', cursive;
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-      font-weight: 400;
-      color: #ffffff;
-    }
-
-    .strip-footer p {
-      font-size: 0.75rem;
-      font-family: 'Gaegu', cursive;
-      letter-spacing: 1px;
-      opacity: 0.95;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      width: 100%;
-      max-width: 320px;
-      margin-bottom: 10px;
-    }
-
-    .ctrl-btn {
-      background: #ffffff;
-      border: 1px solid #ebd4db;
-      border-radius: 12px;
-      padding: 8px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      color: #2b1e23;
-      transition: all 0.2s;
-    }
-
-    .ctrl-btn:hover {
-      background: #fcf5f7;
-    }
-
-    .reset-link {
-      font-size: 0.78rem;
-      color: #4a343c;
-      text-decoration: underline;
-      cursor: pointer;
-      margin-bottom: 15px;
-      font-weight: 500;
-    }
-
     #galleryInput {
       display: none;
     }
 
-    /* PENYESUAIAN KHUSUS LAYAR HP (POSISI TEPAT DI TENGAH DALAM MEMO) */
+    /* PENYESUAIAN KHUSUS LAYAR HP (MAX-WIDTH 600PX) */
     @media (max-width: 600px) {
       body {
         padding: 15px 8px;
         background-attachment: scroll;
+      }
+
+      /* Container Halaman 2 di HP */
+      .clean-container {
+        padding: 25px 18px;
+        border-radius: 22px;
       }
 
       #step1 {
@@ -517,8 +399,6 @@
 
       #step1 .memo-card {
         max-width: 100%;
-        /* Padding atas ditambah sedikit (16%) agar teks turun menjauhi selotip pink */
-        /* Padding bawah disesuaikan agar tombol tidak turun menutupi mangkuk */
         padding: 16% 14% 11% 14%;
       }
 
@@ -528,22 +408,71 @@
       }
 
       .title {
-        font-size: 2.15rem; /* Ukuran judul disesuaikan agar pas di tengah */
+        font-size: 2.15rem;
         margin-bottom: 6px;
         line-height: 1.05;
       }
 
       .description {
-        font-size: 0.78rem; /* Deskripsi dikecilin proporsional */
+        font-size: 0.78rem;
         margin-bottom: 8px;
         line-height: 1.15;
       }
 
-      .btn-journey {
-        font-size: 1.05rem; 
-        height: 36px;
-        max-width: 220px;
-        margin-top: 2px;
+      /* Header Halaman 2 di HP */
+      .clean-container .header-step h2 {
+        font-size: 2rem !important;
+        margin-bottom: 4px !important;
+      }
+
+      .clean-container .header-step p {
+        font-size: 0.95rem !important;
+        margin-bottom: 8px !important;
+      }
+
+      .clean-container .card-desc {
+        font-size: 0.95rem !important;
+        margin-bottom: 14px !important;
+      }
+
+      .preview-header-title {
+        font-size: 1.3rem !important;
+      }
+
+      .preview-header-subtitle {
+        font-size: 0.85rem !important;
+        margin-bottom: 12px !important;
+      }
+
+      .mood-title {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+      }
+
+      .camera-icon {
+        font-size: 36px;
+        margin-bottom: 6px;
+      }
+
+      .waiting-text {
+        font-size: 0.88rem !important;
+        margin: 8px 0 10px 0;
+      }
+
+      /* Disamakan Ukuran Tombol Tape & Tombol Putih di HP */
+      .btn-journey,
+      .btn-white {
+        width: 100%;
+        max-width: 240px;
+        height: 38px;
+        font-size: 1.05rem;
+        border-radius: 20px;
+        margin-bottom: 8px;
+      }
+
+      .filter-btn {
+        padding: 5px 12px;
+        font-size: 0.88rem;
       }
     }
   </style>
@@ -587,7 +516,7 @@
       <!-- Tampilan Preview Tambahan di Bawah -->
       <div id="previewHeaderView" class="hidden" style="width: 100%; text-align: center;">
         <div class="preview-header-title">Preview Your Keepsakes</div>
-        <div class="preview-header-subtitle">All Moments Loaded (3/3)</div>
+        <div class="preview-header-subtitle" id="photoCountLabel">All Moments Loaded (0/3)</div>
       </div>
 
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
@@ -608,69 +537,15 @@
       <!-- Action Buttons -->
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <button id="btnApply" class="btn-journey hidden" onclick="alert('Fitur Generate Keepsake sedang disiapkan karena frame belum tersedia 🌸')">📷 Generate Keepsake</button>
-        <button id="btnBackToGallery" class="btn-white hidden" onclick="openGallery()">← Back to Gallery</button>
+        <button id="btnBackToGallery" class="btn-white hidden" onclick="openGallery()">← Change Photos</button>
         <button id="btnBack" class="btn-white" onclick="resetAndBackToHome()">← Go Back To Home</button>
       </div>
 
     </div>
   </div>
 
-  <!-- HALAMAN 3 -->
-  <div id="step3" class="hidden" style="width: 100%;">
-    <div class="clean-container">
-      <div class="tabs">
-        <button class="tab-btn active" id="tab0" onclick="selectActivePhoto(0)">🌸 Photo 1</button>
-        <button class="tab-btn" id="tab1" onclick="selectActivePhoto(1)">🌸 Photo 2</button>
-        <button class="tab-btn" id="tab2" onclick="selectActivePhoto(2)">🌸 Photo 3</button>
-      </div>
-
-      <div class="photostrip-wrapper" id="photostripCanvas" style="margin: 0 auto 15px auto;">
-        <div class="photo-slot-list">
-          <div class="photo-slot selected-slot" id="slot0" onclick="selectActivePhoto(0)">
-            <img id="img0" src="" class="filter-classic">
-          </div>
-          <div class="photo-slot" id="slot1" onclick="selectActivePhoto(1)">
-            <img id="img1" src="" class="filter-classic">
-          </div>
-          <div class="photo-slot" id="slot2" onclick="selectActivePhoto(2)">
-            <img id="img2" src="" class="filter-classic">
-          </div>
-        </div>
-
-        <div class="strip-footer">
-          <h3>BLOOMING</h3>
-          <p>Daem's Birthday Event</p>
-        </div>
-      </div>
-
-      <div class="controls-grid" style="margin: 0 auto 10px auto;">
-        <button class="ctrl-btn" onclick="adjustPhoto('up')">↑</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('down')">↓</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('left')">←</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('right')">→</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('zoomOut')">🔍 −</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('zoomIn')">🔍 +</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('rotateCCW')">↶ Rotate</button>
-        <button class="ctrl-btn" onclick="adjustPhoto('rotateCW')">Rotate ↷</button>
-      </div>
-
-      <p class="reset-link" onclick="resetPhotoTransform()">↺ Reset This Photo</p>
-
-      <button class="btn-journey" onclick="downloadPhotostrip()">💾 SAVE PHOTOSTRIP</button>
-      <button class="btn-journey" onclick="sharePhotostrip()">📲 SHARE PHOTOSTRIP</button>
-      <button class="btn-white" onclick="resetAndBackToHome()">🌸 MAKE ANOTHER ONE</button>
-    </div>
-  </div>
-
   <script>
     let selectedFilterClass = 'filter-classic';
-    let activeIndex = 0;
-    
-    let photoTransforms = [
-      { x: 0, y: 0, scale: 1, rotate: 0 },
-      { x: 0, y: 0, scale: 1, rotate: 0 },
-      { x: 0, y: 0, scale: 1, rotate: 0 }
-    ];
 
     function startCapture() {
       resetAllData();
@@ -699,28 +574,14 @@
       document.querySelectorAll('.filter-btn').forEach((btn, idx) => {
         btn.classList.toggle('active', idx === 0);
       });
-
-      for (let i = 0; i < 3; i++) {
-        const img = document.getElementById(`img${i}`);
-        if (img) {
-          img.src = '';
-          img.className = 'filter-classic';
-        }
-        photoTransforms[i] = { x: 0, y: 0, scale: 1, rotate: 0 };
-      }
     }
 
     function goToStep(stepNumber) {
       document.getElementById('step1').classList.add('hidden');
       document.getElementById('step2').classList.add('hidden');
-      document.getElementById('step3').classList.add('hidden');
 
       if (stepNumber === 1) document.getElementById('step1').classList.remove('hidden');
       if (stepNumber === 2) document.getElementById('step2').classList.remove('hidden');
-      if (stepNumber === 3) {
-        document.getElementById('step3').classList.remove('hidden');
-        updatePhotostripImages();
-      }
     }
 
     function openGallery() { 
@@ -739,14 +600,14 @@
         document.getElementById('btnAddPhotos').classList.add('hidden');
         document.getElementById('waitingText').classList.add('hidden');
 
+        const photosToDisplay = Array.from(files).slice(0, 3);
+        document.getElementById('photoCountLabel').innerText = `Moments Loaded (${photosToDisplay.length}/3)`;
         document.getElementById('previewHeaderView').classList.remove('hidden');
         
         previewContainer.classList.remove('hidden');
         moodSection.classList.remove('hidden');
         btnApply.classList.remove('hidden');
         document.getElementById('btnBackToGallery').classList.remove('hidden');
-
-        const photosToDisplay = Array.from(files).slice(0, 3);
 
         const readPromises = photosToDisplay.map((file) => {
           return new Promise((resolve) => {
@@ -778,8 +639,6 @@
             card.appendChild(imgWrapper);
             card.appendChild(num);
             previewContainer.appendChild(card);
-
-            document.getElementById(`img${index}`).src = dataUrl;
           });
         });
       }
@@ -791,90 +650,8 @@
 
       selectedFilterClass = `filter-${filterName}`;
 
-      document.querySelectorAll('.polaroid-img-wrapper img, .photo-slot img').forEach(img => {
+      document.querySelectorAll('.polaroid-img-wrapper img').forEach(img => {
         img.className = selectedFilterClass;
-      });
-    }
-
-    function selectActivePhoto(index) {
-      activeIndex = index;
-      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
-      });
-      document.querySelectorAll('.photo-slot').forEach((slot, i) => {
-        slot.classList.toggle('selected-slot', i === index);
-      });
-    }
-
-    function adjustPhoto(action) {
-      let t = photoTransforms[activeIndex];
-      if (action === 'up') t.y -= 5;
-      if (action === 'down') t.y += 5;
-      if (action === 'left') t.x -= 5;
-      if (action === 'right') t.x += 5;
-      if (action === 'zoomIn') t.scale += 0.05;
-      if (action === 'zoomOut') t.scale = Math.max(0.2, t.scale - 0.05);
-      if (action === 'rotateCW') t.rotate += 90;
-      if (action === 'rotateCCW') t.rotate -= 90;
-
-      applyTransform(activeIndex);
-    }
-
-    function resetPhotoTransform() {
-      photoTransforms[activeIndex] = { x: 0, y: 0, scale: 1, rotate: 0 };
-      applyTransform(activeIndex);
-    }
-
-    function applyTransform(index) {
-      let t = photoTransforms[index];
-      let img = document.getElementById(`img${index}`);
-      if (img) {
-        img.style.transform = `translate(calc(-50% + ${t.x}px), calc(-50% + ${t.y}px)) scale(${t.scale}) rotate(${t.rotate}deg)`;
-      }
-    }
-
-    function updatePhotostripImages() {
-      for (let i = 0; i < 3; i++) {
-        applyTransform(i);
-      }
-    }
-
-    const html2canvasOptions = {
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false
-    };
-
-    function downloadPhotostrip() {
-      const element = document.getElementById('photostripCanvas');
-      html2canvas(element, html2canvasOptions).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'keepsakes-in-bloom-photostrip.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }).catch(err => {
-        alert("Gagal mengunduh gambar: " + err.message);
-      });
-    }
-
-    function sharePhotostrip() {
-      const element = document.getElementById('photostripCanvas');
-      html2canvas(element, html2canvasOptions).then(canvas => {
-        canvas.toBlob(blob => {
-          if (navigator.share) {
-            const file = new File([blob], 'keepsakes-in-bloom-photostrip.png', { type: 'image/png' });
-            navigator.share({
-              files: [file],
-              title: 'Keepsakes in Bloom Photostrip',
-              text: 'Check out my photostrip!'
-            }).catch(() => downloadPhotostrip());
-          } else {
-            downloadPhotostrip();
-          }
-        });
-      }).catch(err => {
-        alert("Gagal membagikan gambar: " + err.message);
       });
     }
   </script>
