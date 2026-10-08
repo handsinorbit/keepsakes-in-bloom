@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Keepsakes in Bloom Photobooth</title>
+  
+  <!-- Import Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Gaegu:wght@400;700&family=Gochi+Hand&family=Knewave&family=Mansalva&family=Momo+Signature&family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:wght@300;400;500;600&family=Zeyada&display=swap" rel="stylesheet">
+  
+  <!-- HTML2Canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://lh3.googleusercontent.com/d/1yitCdxlELKysNDtqmhgNXpdGCNseIHRS') no-repeat center center fixed;
+      background-size: cover;
+      color: #2b1e23;
+      text-align: center;
+      padding: 20px 10px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* HALAMAN 1: KARTU MEMO PROPORSI ASLI (ASPECT RATIO 4:3) */
+    #step1 {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #step1 .memo-card {
+      background: url('https://lh3.googleusercontent.com/d/1iPwZ7OFLgbemeDuuPZTpTesM-z-OLjss') no-repeat center center;
+      background-size: contain;
+      width: 100%;
+      max-width: 650px;
+      aspect-ratio: 4 / 3;
+      padding: 13% 14% 8% 14%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* HALAMAN 2 & 3 */
+    .clean-container {
+      background-color: #f2f2e6;
+      width: 92%;
+      max-width: 680px;
+      border-radius: 28px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+
+    .sub-subtitle {
+      font-family: 'Momo Signature', cursive;
+      font-size: 1.1rem;
+      color: #7b5263;
+      margin-bottom: 2px;
+      position: relative;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .title {
+      font-family: 'Knewave', system-ui, cursive;
+      font-size: 4rem;
+      font-weight: 400;
+      color: #EB5289;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .description {
+      font-family: 'Mansalva', cursive;
+      font-size: 1.3rem;
+      color: #2b1e23;
+      margin-bottom: 10px;
+      font-weight: 400;
+      line-height: 1.2;
+      max-width: 440px;
+    }
+
+    /* Styling Tombol Tape Custom Halaman 1 */
+    .btn-journey {
+      background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
+      background-size: cover; 
+      color: #5c3545;
+      width: 90%;
+      max-width: 420px;
+      height: 52px;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transition: filter 0.3s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px; 
+      margin-bottom: 8px;
+      text-decoration: none;
+      text-shadow: 
+        1px 1px 0px #ffffff,
+       -1px -1px 0px #ffffff,
+        1px -1px 0px #ffffff,
+       -1px 1px 0px #ffffff,
+        0px 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-journey:hover {
+      filter: brightness(0.92);
+      transform: translateY(-1px);
+    }
+
+    .btn-journey:active {
+      filter: brightness(0.85);
+      transform: translateY(1px);
+    }
+
+    /* Styling Tombol Putih / Back */
+    .btn-white {
+      background: #ffffff;
+      color: #5c3545;
+      width: 90%;
+      max-width: 420px;
+      height: 52px;
+      border: 1px solid #ebd4db;
+      border-radius: 30px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: filter 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .btn-white:hover {
+      background-color: #f7ebf0;
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+    }
+
+    .btn-white:active {
+      background-color: #f0dee5;
+      filter: brightness(0.88);
+      transform: translateY(1px);
+    }
+
+    /* Header Halaman 2 */
+    .clean-container .header-step h2 {
+      font-family: 'Knewave', system-ui, cursive !important;
+      font-size: 3.2rem !important;
+      color: #EB5289 !important;
+      margin-bottom: 8px !important;
+      line-height: 1.1;
+      letter-spacing: 1px;
+    }
+
+    .clean-container .header-step p {
+      font-family: 'Momo Signature', cursive !important;
+      font-size: 1.3rem !important;
+      color: #7b5263 !important;
+      margin-top: 4px !important;
+      margin-bottom: 12px !important;
+    }
+
+    /* Font Mansalva */
+    .clean-container .card-desc,
+    .preview-header-title,
+    .preview-header-subtitle,
+    .mood-title,
+    .waiting-text {
+      font-family: 'Mansalva', cursive !important;
+      color: #2b1e23;
+    }
+
+    .clean-container .card-desc {
+      font-size: 1.35rem !important;
+      margin-bottom: 20px !important;
+      text-align: center;
+      max-width: 440px !important;
+      line-height: 1.3;
+      font-weight: 400;
+    }
+
+    .preview-header-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2b1e23;
+      margin-top: 15px;
+      margin-bottom: 2px;
+    }
+
+    .preview-header-subtitle {
+      font-size: 1.15rem;
+      color: #7b5263;
+      margin-bottom: 16px;
+    }
+
+    .camera-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+      line-height: 1;
+      display: inline-block;
+      animation: floatCamera 2s ease-in-out infinite;
+    }
+
+    @keyframes floatCamera {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .waiting-text {
+      font-size: 1.15rem;
+      color: #7b5263 !important;
+      margin: 12px 0 14px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .hourglass-icon {
+      display: inline-block;
+      animation: spinHourglass 2.5s ease-in-out infinite;
+    }
+
+    @keyframes spinHourglass {
+      0% { transform: rotate(0deg); }
+      50%, 100% { transform: rotate(180deg); }
+    }
+
+    .dots::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      text-align: left;
+      animation: animateDots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes animateDots {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
+    }
+
+    /* Preview Polaroid */
+    .preview-container {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .polaroid-card {
+      position: relative;
+      width: 31%;
+      background: #ffffff;
+      padding: 6px 6px 20px 6px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 1px solid #eee;
+    }
+
+    .polaroid-img-wrapper {
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+
+    .polaroid-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .polaroid-number {
+      position: absolute;
+      bottom: 4px;
+      right: 8px;
+      font-size: 0.75rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      color: #7b5263;
+      z-index: 5;
+    }
+
+    .mood-section {
+      width: 100%;
+      margin-bottom: 18px;
+    }
+
+    .mood-title {
+      font-size: 1.3rem !important;
+      margin-bottom: 12px;
+    }
+
+    .filter-options {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #ffffff;
+      border: 1px solid #ebd4db;
+      padding: 8px 18px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      color: #5c3545;
+      cursor: pointer;
+      font-family: 'Delicious Handrawn', cursive;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn.active {
+      background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
+      background-size: cover;
+      color: #5c3545;
+      border-color: transparent;
+      text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    .filter-classic    { filter: none; }
+    .filter-bloom      { filter: brightness(1.08) contrast(0.9) saturate(1.15); }
+    .filter-softglow   { filter: brightness(1.12) contrast(0.85) saturate(0.8); }
+    .filter-vintage    { filter: brightness(0.95) contrast(1.05) sepia(0.25) saturate(0.85); }
+    .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 20px;
+      border: 1px solid #f5a6b9;
+      background: #ffffff;
+      color: #2b1e23;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #f5a6b9;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .photostrip-wrapper {
+      background: #fce4ec;
+      padding: 12px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      position: relative;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .photo-slot-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .photo-slot {
+      width: 100%;
+      height: 155px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .photo-slot.selected-slot {
+      outline: 3px solid #f5a6b9;
+    }
+
+    .photo-slot img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      max-width: none;
+      width: 100%;
+      height: auto;
+      transform-origin: center center;
+    }
+
+    .strip-footer {
+      background: linear-gradient(180deg, #7b9acc 0%, #617ca6 100%);
+      padding: 12px;
+      border-radius: 10px;
+      color: #fff;
+    }
+
+    .strip-footer h3 {
+      font-family: 'Gochi Hand', cursive;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    .strip-footer p {
+      font-size: 0.75rem;
+      font-family: 'Gaegu', cursive;
+      letter-spacing: 1px;
+      opacity: 0.95;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 10px;
+    }
+
+    .ctrl-btn {
+      background: #ffffff;
+      border: 1px solid #ebd4db;
+      border-radius: 12px;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #2b1e23;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      background: #fcf5f7;
+    }
+
+    .reset-link {
+      font-size: 0.78rem;
+      color: #4a343c;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    #galleryInput {
+      display: none;
+    }
+
+    /* PENYESUAIAN KHUSUS LAYAR HP (POSISI TEPAT DI TENGAH DALAM MEMO) */
+    @media (max-width: 600px) {
+      body {
+        padding: 15px 8px;
+        background-attachment: scroll;
+      }
+
+      #step1 {
+        padding: 0 10px;
+      }
+
+      #step1 .memo-card {
+        max-width: 100%;
+        /* Padding atas ditambah sedikit (16%) agar teks turun menjauhi selotip pink */
+        /* Padding bawah disesuaikan agar tombol tidak turun menutupi mangkuk */
+        padding: 16% 14% 11% 14%;
+      }
+
+      .sub-subtitle {
+        font-size: 0.78rem;
+        margin-bottom: 2px;
+      }
+
+      .title {
+        font-size: 2.15rem; /* Ukuran judul disesuaikan agar pas di tengah */
+        margin-bottom: 6px;
+        line-height: 1.05;
+      }
+
+      .description {
+        font-size: 0.78rem; /* Deskripsi dikecilin proporsional */
+        margin-bottom: 8px;
+        line-height: 1.15;
+      }
+
+      .btn-journey {
+        font-size: 1.05rem; 
+        height: 36px;
+        max-width: 220px;
+        margin-top: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HALAMAN 1 -->
+  <div id="step1">
+    <div class="memo-card">
+      <div class="sub-subtitle">daem's Birthday Event</div>
+      <h1 class="title">Keepsakes<br>in Bloom</h1>
+      <p class="description">Let your cherished moments bloom among the stars in a photostrip ⭐🎞️</p>
+      <button class="btn-journey" onclick="startCapture()">Begin the Journey</button>
+    </div>
+  </div>
+
+  <!-- HALAMAN 2 -->
+  <div id="step2" class="hidden" style="width: 100%;">
+    <div class="clean-container">
+      
+      <!-- Header Utama Halaman 2 -->
+      <div class="header-step" style="text-align: center; margin-bottom: 15px;">
+        <h2>Keepsakes in Bloom</h2>
+        <p>Craft Your Memories</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <div class="camera-icon">📷</div>
+        
+        <p class="card-desc">
+          Pick three favorite moments to build your keepsakes.
+        </p>
+        
+        <button id="btnAddPhotos" class="btn-journey" onclick="openGallery()">Add Photos From Gallery</button>
+
+        <div id="waitingText" class="waiting-text">
+          <span class="hourglass-icon">⏳</span> Waiting for your photos<span class="dots"></span>
+        </div>
+      </div>
+
+      <!-- Tampilan Preview Tambahan di Bawah -->
+      <div id="previewHeaderView" class="hidden" style="width: 100%; text-align: center;">
+        <div class="preview-header-title">Preview Your Keepsakes</div>
+        <div class="preview-header-subtitle">All Moments Loaded (3/3)</div>
+      </div>
+
+      <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
+      <div id="previewContainer" class="preview-container hidden"></div>
+
+      <!-- Selection Present Theme -->
+      <div id="moodSection" class="mood-section hidden">
+        <h3 class="mood-title">Select Present Theme</h3>
+        <div class="filter-options">
+          <button class="filter-btn active" onclick="applyFilter('classic', this)">Classic</button>
+          <button class="filter-btn" onclick="applyFilter('bloom', this)">Bloom</button>
+          <button class="filter-btn" onclick="applyFilter('softglow', this)">Soft Glow</button>
+          <button class="filter-btn" onclick="applyFilter('vintage', this)">Vintage</button>
+          <button class="filter-btn" onclick="applyFilter('warmdaylight', this)">Warm Daylight</button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <button id="btnApply" class="btn-journey hidden" onclick="alert('Fitur Generate Keepsake sedang disiapkan karena frame belum tersedia 🌸')">📷 Generate Keepsake</button>
+        <button id="btnBackToGallery" class="btn-white hidden" onclick="openGallery()">← Back to Gallery</button>
+        <button id="btnBack" class="btn-white" onclick="resetAndBackToHome()">← Go Back To Home</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HALAMAN 3 -->
+  <div id="step3" class="hidden" style="width: 100%;">
+    <div class="clean-container">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab0" onclick="selectActivePhoto(0)">🌸 Photo 1</button>
+        <button class="tab-btn" id="tab1" onclick="selectActivePhoto(1)">🌸 Photo 2</button>
+        <button class="tab-btn" id="tab2" onclick="selectActivePhoto(2)">🌸 Photo 3</button>
+      </div>
+
+      <div class="photostrip-wrapper" id="photostripCanvas" style="margin: 0 auto 15px auto;">
+        <div class="photo-slot-list">
+          <div class="photo-slot selected-slot" id="slot0" onclick="selectActivePhoto(0)">
+            <img id="img0" src="" class="filter-classic">
+          </div>
+          <div class="photo-slot" id="slot1" onclick="selectActivePhoto(1)">
+            <img id="img1" src="" class="filter-classic">
+          </div>
+          <div class="photo-slot" id="slot2" onclick="selectActivePhoto(2)">
+            <img id="img2" src="" class="filter-classic">
+          </div>
+        </div>
+
+        <div class="strip-footer">
+          <h3>BLOOMING</h3>
+          <p>Daem's Birthday Event</p>
+        </div>
+      </div>
+
+      <div class="controls-grid" style="margin: 0 auto 10px auto;">
+        <button class="ctrl-btn" onclick="adjustPhoto('up')">↑</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('down')">↓</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('left')">←</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('right')">→</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('zoomOut')">🔍 −</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('zoomIn')">🔍 +</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('rotateCCW')">↶ Rotate</button>
+        <button class="ctrl-btn" onclick="adjustPhoto('rotateCW')">Rotate ↷</button>
+      </div>
+
+      <p class="reset-link" onclick="resetPhotoTransform()">↺ Reset This Photo</p>
+
+      <button class="btn-journey" onclick="downloadPhotostrip()">💾 SAVE PHOTOSTRIP</button>
+      <button class="btn-journey" onclick="sharePhotostrip()">📲 SHARE PHOTOSTRIP</button>
+      <button class="btn-white" onclick="resetAndBackToHome()">🌸 MAKE ANOTHER ONE</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedFilterClass = 'filter-classic';
+    let activeIndex = 0;
+    
+    let photoTransforms = [
+      { x: 0, y: 0, scale: 1, rotate: 0 },
+      { x: 0, y: 0, scale: 1, rotate: 0 },
+      { x: 0, y: 0, scale: 1, rotate: 0 }
+    ];
+
+    function startCapture() {
+      resetAllData();
+      goToStep(2);
+    }
+
+    function resetAndBackToHome() {
+      resetAllData();
+      goToStep(1);
+    }
+
+    function resetAllData() {
+      document.getElementById('galleryInput').value = '';
+      document.getElementById('previewContainer').innerHTML = '';
+      document.getElementById('previewContainer').classList.add('hidden');
+      
+      document.getElementById('btnAddPhotos').classList.remove('hidden');
+      document.getElementById('waitingText').classList.remove('hidden');
+      document.getElementById('previewHeaderView').classList.add('hidden');
+
+      document.getElementById('moodSection').classList.add('hidden');
+      document.getElementById('btnApply').classList.add('hidden');
+      document.getElementById('btnBackToGallery').classList.add('hidden');
+
+      selectedFilterClass = 'filter-classic';
+      document.querySelectorAll('.filter-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === 0);
+      });
+
+      for (let i = 0; i < 3; i++) {
+        const img = document.getElementById(`img${i}`);
+        if (img) {
+          img.src = '';
+          img.className = 'filter-classic';
+        }
+        photoTransforms[i] = { x: 0, y: 0, scale: 1, rotate: 0 };
+      }
+    }
+
+    function goToStep(stepNumber) {
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step3').classList.add('hidden');
+
+      if (stepNumber === 1) document.getElementById('step1').classList.remove('hidden');
+      if (stepNumber === 2) document.getElementById('step2').classList.remove('hidden');
+      if (stepNumber === 3) {
+        document.getElementById('step3').classList.remove('hidden');
+        updatePhotostripImages();
+      }
+    }
+
+    function openGallery() { 
+      document.getElementById('galleryInput').click(); 
+    }
+
+    function handleImageSelect(event) {
+      const files = event.target.files;
+      const previewContainer = document.getElementById('previewContainer');
+      const moodSection = document.getElementById('moodSection');
+      const btnApply = document.getElementById('btnApply');
+
+      previewContainer.innerHTML = '';
+
+      if (files.length > 0) {
+        document.getElementById('btnAddPhotos').classList.add('hidden');
+        document.getElementById('waitingText').classList.add('hidden');
+
+        document.getElementById('previewHeaderView').classList.remove('hidden');
+        
+        previewContainer.classList.remove('hidden');
+        moodSection.classList.remove('hidden');
+        btnApply.classList.remove('hidden');
+        document.getElementById('btnBackToGallery').classList.remove('hidden');
+
+        const photosToDisplay = Array.from(files).slice(0, 3);
+
+        const readPromises = photosToDisplay.map((file) => {
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              resolve(e.target.result);
+            };
+            reader.readAsDataURL(file);
+          });
+        });
+
+        Promise.all(readPromises).then((results) => {
+          results.forEach((dataUrl, index) => {
+            const card = document.createElement('div');
+            card.className = 'polaroid-card';
+
+            const imgWrapper = document.createElement('div');
+            imgWrapper.className = 'polaroid-img-wrapper';
+
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.className = selectedFilterClass;
+
+            const num = document.createElement('div');
+            num.className = 'polaroid-number';
+            num.innerText = `#${index + 1}`;
+
+            imgWrapper.appendChild(img);
+            card.appendChild(imgWrapper);
+            card.appendChild(num);
+            previewContainer.appendChild(card);
+
+            document.getElementById(`img${index}`).src = dataUrl;
+          });
+        });
+      }
+    }
+
+    function applyFilter(filterName, btnElement) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      selectedFilterClass = `filter-${filterName}`;
+
+      document.querySelectorAll('.polaroid-img-wrapper img, .photo-slot img').forEach(img => {
+        img.className = selectedFilterClass;
+      });
+    }
+
+    function selectActivePhoto(index) {
+      activeIndex = index;
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+      document.querySelectorAll('.photo-slot').forEach((slot, i) => {
+        slot.classList.toggle('selected-slot', i === index);
+      });
+    }
+
+    function adjustPhoto(action) {
+      let t = photoTransforms[activeIndex];
+      if (action === 'up') t.y -= 5;
+      if (action === 'down') t.y += 5;
+      if (action === 'left') t.x -= 5;
+      if (action === 'right') t.x += 5;
+      if (action === 'zoomIn') t.scale += 0.05;
+      if (action === 'zoomOut') t.scale = Math.max(0.2, t.scale - 0.05);
+      if (action === 'rotateCW') t.rotate += 90;
+      if (action === 'rotateCCW') t.rotate -= 90;
+
+      applyTransform(activeIndex);
+    }
+
+    function resetPhotoTransform() {
+      photoTransforms[activeIndex] = { x: 0, y: 0, scale: 1, rotate: 0 };
+      applyTransform(activeIndex);
+    }
+
+    function applyTransform(index) {
+      let t = photoTransforms[index];
+      let img = document.getElementById(`img${index}`);
+      if (img) {
+        img.style.transform = `translate(calc(-50% + ${t.x}px), calc(-50% + ${t.y}px)) scale(${t.scale}) rotate(${t.rotate}deg)`;
+      }
+    }
+
+    function updatePhotostripImages() {
+      for (let i = 0; i < 3; i++) {
+        applyTransform(i);
+      }
+    }
+
+    const html2canvasOptions = {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false
+    };
+
+    function downloadPhotostrip() {
+      const element = document.getElementById('photostripCanvas');
+      html2canvas(element, html2canvasOptions).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'keepsakes-in-bloom-photostrip.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(err => {
+        alert("Gagal mengunduh gambar: " + err.message);
+      });
+    }
+
+    function sharePhotostrip() {
+      const element = document.getElementById('photostripCanvas');
+      html2canvas(element, html2canvasOptions).then(canvas => {
+        canvas.toBlob(blob => {
+          if (navigator.share) {
+            const file = new File([blob], 'keepsakes-in-bloom-photostrip.png', { type: 'image/png' });
+            navigator.share({
+              files: [file],
+              title: 'Keepsakes in Bloom Photostrip',
+              text: 'Check out my photostrip!'
+            }).catch(() => downloadPhotostrip());
+          } else {
+            downloadPhotostrip();
+          }
+        });
+      }).catch(err => {
+        alert("Gagal membagikan gambar: " + err.message);
+      });
+    }
+  </script>
+
+</body>
+</html>
