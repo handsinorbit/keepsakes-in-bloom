@@ -39,7 +39,7 @@
       display: none !important;
     }
 
-    /* HALAMAN 1: KARTU MEMO ASLI (DESKTOP / PC) */
+    /* HALAMAN 1: KARTU MEMO (DESKTOP / PC) */
     #step1 {
       width: 100%;
       display: flex;
@@ -51,9 +51,9 @@
       background: url('https://lh3.googleusercontent.com/d/1iPwZ7OFLgbemeDuuPZTpTesM-z-OLjss') no-repeat center center;
       background-size: contain;
       width: 100%;
-      max-width: 650px;
+      max-width: 620px;
       aspect-ratio: 4 / 3;
-      padding: 13% 14% 8% 14%;
+      padding: 12% 12% 6% 12%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -61,6 +61,77 @@
       margin: 0 auto;
       position: relative;
       z-index: 2;
+    }
+
+    .sub-subtitle {
+      font-family: 'Momo Signature', cursive;
+      font-size: 1rem;
+      color: #7b5263;
+      margin-bottom: 2px;
+      position: relative;
+      z-index: 1;
+      white-space: nowrap;
+    }
+
+    .title {
+      font-family: 'Knewave', system-ui, cursive;
+      font-size: 3.2rem;
+      font-weight: 400;
+      color: #EB5289;
+      line-height: 1.05;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .description {
+      font-family: 'Mansalva', cursive;
+      font-size: 1.15rem;
+      color: #2b1e23;
+      margin-bottom: 12px;
+      font-weight: 400;
+      line-height: 1.25;
+      max-width: 380px;
+    }
+
+    /* Styling Tombol Tape Custom Halaman 1 Desktop */
+    .btn-journey {
+      background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
+      background-size: cover; 
+      color: #5c3545;
+      width: 85%;
+      max-width: 360px;
+      height: 48px;
+      border: none;
+      border-radius: 30px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transition: filter 0.3s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px; 
+      margin-bottom: 4px;
+      text-decoration: none;
+      text-shadow: 
+        1px 1px 0px #ffffff,
+       -1px -1px 0px #ffffff,
+        1px -1px 0px #ffffff,
+       -1px 1px 0px #ffffff,
+        0px 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-journey:hover {
+      filter: brightness(0.92);
+      transform: translateY(-1px);
+    }
+
+    .btn-journey:active {
+      filter: brightness(0.85);
+      transform: translateY(1px);
     }
 
     /* HALAMAN 2 (DESKTOP / PC) */
@@ -80,88 +151,17 @@
       z-index: 2;
     }
 
-    .sub-subtitle {
-      font-family: 'Momo Signature', cursive;
-      font-size: 1.1rem;
-      color: #7b5263;
-      margin-bottom: 2px;
-      position: relative;
-      z-index: 1;
-      white-space: nowrap;
-    }
-
-    .title {
-      font-family: 'Knewave', system-ui, cursive;
-      font-size: 4rem;
-      font-weight: 400;
-      color: #EB5289;
-      line-height: 1.05;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-    }
-
-    .description {
-      font-family: 'Mansalva', cursive;
-      font-size: 1.3rem;
-      color: #2b1e23;
-      margin-bottom: 10px;
-      font-weight: 400;
-      line-height: 1.2;
-      max-width: 440px;
-    }
-
-    /* Styling Tombol Tape Custom Halaman 1 Desktop */
-    .btn-journey {
-      background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
-      background-size: cover; 
-      color: #5c3545;
-      width: 90%;
-      max-width: 420px;
-      height: 52px;
-      border: none;
-      border-radius: 30px;
-      font-family: 'Delicious Handrawn', cursive;
-      font-size: 1.45rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      transition: filter 0.3s ease, transform 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 4px; 
-      margin-bottom: 8px;
-      text-decoration: none;
-      text-shadow: 
-        1px 1px 0px #ffffff,
-       -1px -1px 0px #ffffff,
-        1px 1px 0px #ffffff,
-       -1px 1px 0px #ffffff,
-        0px 2px 4px rgba(0, 0, 0, 0.25);
-    }
-
-    .btn-journey:hover {
-      filter: brightness(0.92);
-      transform: translateY(-1px);
-    }
-
-    .btn-journey:active {
-      filter: brightness(0.85);
-      transform: translateY(1px);
-    }
-
     /* Styling Tombol Putih Desktop */
     .btn-white {
       background: #ffffff;
       color: #5c3545;
-      width: 90%;
-      max-width: 420px;
-      height: 52px;
+      width: 85%;
+      max-width: 360px;
+      height: 48px;
       border: 1px solid #ebd4db;
       border-radius: 30px;
       font-family: 'Delicious Handrawn', cursive;
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: 0.5px;
       cursor: pointer;
@@ -381,7 +381,7 @@
     }
 
     /* ========================================================
-       KHUSUS TAMPILAN HP SAJA (MAX-WIDTH 600PX) 
+       KHUSUS TAMPILAN HP (MAX-WIDTH 600PX)
        ======================================================== */
     @media (max-width: 600px) {
       body {
@@ -395,7 +395,7 @@
 
       #step1 .memo-card {
         max-width: 100%;
-        padding: 15% 12% 10% 12%;
+        padding: 16% 12% 10% 12%;
       }
 
       .sub-subtitle {
@@ -468,7 +468,7 @@
         margin: 8px 0 10px 0 !important;
       }
 
-      /* Ukuran Tombol Tape & Tombol Putih Halaman 2 di HP */
+      /* Ukuran Tombol Halaman 2 di HP */
       .clean-container .btn-journey,
       .clean-container .btn-white {
         width: 100% !important;
