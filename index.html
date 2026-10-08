@@ -39,7 +39,7 @@
       display: none !important;
     }
 
-    /* HALAMAN 1: KARTU MEMO PROPORSI ASLI (ASPECT RATIO 4:3) */
+    /* HALAMAN 1: KARTU MEMO DESKTOP / PC */
     #step1 {
       width: 100%;
       display: flex;
@@ -63,7 +63,7 @@
       z-index: 2;
     }
 
-    /* HALAMAN 2 */
+    /* HALAMAN 2 DESKTOP / PC */
     .clean-container {
       background-color: #f2f2e6;
       width: 92%;
@@ -104,13 +104,13 @@
       font-family: 'Mansalva', cursive;
       font-size: 1.3rem;
       color: #2b1e23;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-weight: 400;
-      line-height: 1.25;
+      line-height: 1.2;
       max-width: 440px;
     }
 
-    /* Styling Tombol Tape Custom Halaman 1 */
+    /* Styling Tombol Tape Custom Halaman 1 Desktop */
     .btn-journey {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover; 
@@ -151,7 +151,7 @@
       transform: translateY(1px);
     }
 
-    /* Styling Tombol Putih / Back (Desktop) */
+    /* Styling Tombol Putih Desktop */
     .btn-white {
       background: #ffffff;
       color: #5c3545;
@@ -185,7 +185,7 @@
       transform: translateY(1px);
     }
 
-    /* Header Halaman 2 */
+    /* Header Halaman 2 Desktop */
     .clean-container .header-step h2 {
       font-family: 'Knewave', system-ui, cursive !important;
       font-size: 3.2rem !important;
@@ -381,7 +381,7 @@
     }
 
     /* ========================================================
-       PENYESUAIAN KHUSUS LAYAR HP (MAX-WIDTH 600PX) 
+       KHUSUS LAYAR HP SAJA (MAX-WIDTH 600PX) 
        ======================================================== */
     @media (max-width: 600px) {
       body {
@@ -389,109 +389,99 @@
         background-attachment: scroll;
       }
 
-      /* Container Putih Halaman 2 di HP */
-      .clean-container {
-        padding: 22px 14px !important;
-        border-radius: 20px !important;
-        width: 96% !important;
-      }
-
       #step1 {
-        padding: 0 5px;
+        padding: 0 10px;
       }
 
       #step1 .memo-card {
         max-width: 100%;
-        padding: 14% 10% 8% 10%;
+        padding: 16% 14% 11% 14%;
       }
 
       .sub-subtitle {
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         margin-bottom: 2px;
       }
 
       .title {
-        font-size: 2.2rem;
-        margin-bottom: 8px;
+        font-size: 2.15rem;
+        margin-bottom: 6px;
         line-height: 1.05;
       }
 
-      /* Deskripsi Halaman 1 Diberikan Jarak Tambahan */
       .description {
-        font-size: 0.82rem;
-        margin-bottom: 16px !important;
-        line-height: 1.25;
-        max-width: 260px;
+        font-size: 0.78rem;
+        margin-bottom: 8px;
+        line-height: 1.15;
       }
 
-      /* Tombol Utama Halaman 1 di HP (Ukuran Diperbesar) */
       #step1 .btn-journey {
-        width: 100% !important;
-        max-width: 280px !important;
-        height: 46px !important;
-        font-size: 1.2rem !important;
-        border-radius: 24px !important;
-        margin-top: 4px !important;
+        font-size: 1.05rem; 
+        height: 36px;
+        max-width: 220px;
+        margin-top: 2px;
+      }
+
+      /* Container Halaman 2 di HP */
+      .clean-container {
+        padding: 25px 18px !important;
+        border-radius: 22px !important;
+      }
+
+      /* Header Halaman 2 di HP */
+      .clean-container .header-step h2 {
+        font-size: 2rem !important;
         margin-bottom: 4px !important;
       }
 
-      /* Teks Judul & Subtitle Halaman 2 di HP */
-      .clean-container .header-step h2 {
-        font-size: 1.8rem !important;
-        margin-bottom: 2px !important;
-      }
-
       .clean-container .header-step p {
-        font-size: 0.88rem !important;
-        margin-bottom: 8px !important;
-      }
-
-      .clean-container .card-desc {
-        font-size: 0.88rem !important;
-        margin-bottom: 12px !important;
-      }
-
-      .preview-header-title {
-        font-size: 1.15rem !important;
-        margin-top: 10px !important;
-      }
-
-      .preview-header-subtitle {
-        font-size: 0.8rem !important;
-        margin-bottom: 10px !important;
-      }
-
-      .mood-title {
         font-size: 0.95rem !important;
         margin-bottom: 8px !important;
       }
 
+      .clean-container .card-desc {
+        font-size: 0.95rem !important;
+        margin-bottom: 14px !important;
+      }
+
+      .preview-header-title {
+        font-size: 1.3rem !important;
+      }
+
+      .preview-header-subtitle {
+        font-size: 0.85rem !important;
+        margin-bottom: 12px !important;
+      }
+
+      .mood-title {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+      }
+
       .camera-icon {
-        font-size: 32px !important;
-        margin-bottom: 4px !important;
-      }
-
-      .waiting-text {
-        font-size: 0.82rem !important;
-        margin: 6px 0 8px 0 !important;
-      }
-
-      /* Tombol Halaman 2 di HP */
-      .clean-container .btn-journey,
-      .clean-container .btn-white {
-        width: 100% !important;
-        max-width: 260px !important;
-        height: 42px !important;
-        font-size: 1.05rem !important;
-        border-radius: 22px !important;
-        margin-top: 2px !important;
+        font-size: 36px !important;
         margin-bottom: 6px !important;
       }
 
-      /* Filter Badges di HP */
+      .waiting-text {
+        font-size: 0.88rem !important;
+        margin: 8px 0 10px 0 !important;
+      }
+
+      /* Disamakan Ukuran Tombol Tape & Tombol Putih Halaman 2 di HP */
+      .clean-container .btn-journey,
+      .clean-container .btn-white {
+        width: 100% !important;
+        max-width: 240px !important;
+        height: 38px !important;
+        font-size: 1.05rem !important;
+        border-radius: 20px !important;
+        margin-bottom: 8px !important;
+      }
+
       .filter-btn {
-        padding: 4px 10px !important;
-        font-size: 0.82rem !important;
+        padding: 5px 12px !important;
+        font-size: 0.88rem !important;
       }
     }
   </style>
@@ -503,7 +493,7 @@
     <div class="memo-card">
       <div class="sub-subtitle">daem's Birthday Event</div>
       <h1 class="title">Keepsakes<br>in Bloom</h1>
-      <p class="description">Let your cherished moments bloom<br>among the stars in a photostrip ⭐🎞️</p>
+      <p class="description">Let your cherished moments bloom among the stars in a photostrip ⭐🎞️</p>
       <button class="btn-journey" onclick="startCapture()">Begin the Journey</button>
     </div>
   </div>
