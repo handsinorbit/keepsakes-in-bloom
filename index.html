@@ -39,6 +39,35 @@
       display: none !important;
     }
 
+    /* ANIMASI FADE-IN SAAT PINDAH HALAMAN */
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* ANIMASI GOYANG / MELAYANG (FLOATING) UNTUK MEMO CARD */
+    @keyframes floatMemo {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-8px) rotate(0.8deg);
+      }
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+
     /* HALAMAN 1: KARTU MEMO (DESKTOP / PC) */
     #step1 {
       width: 100%;
@@ -53,7 +82,7 @@
       width: 100%;
       max-width: 650px;
       aspect-ratio: 4 / 3;
-      padding: 9% 10% 6% 10%; /* Padding atas dikecilkan agar teks naik */
+      padding: 9% 10% 6% 10%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -61,6 +90,8 @@
       margin: 0 auto;
       position: relative;
       z-index: 2;
+      /* Menerapkan Animasi Goyang Halus */
+      animation: floatMemo 4s ease-in-out infinite;
     }
 
     .sub-subtitle {
@@ -75,7 +106,7 @@
 
     .title {
       font-family: 'Knewave', system-ui, cursive;
-      font-size: 3.8rem; /* Ukuran judul diperbesar */
+      font-size: 3.8rem;
       font-weight: 400;
       color: #EB5289;
       line-height: 1.05;
@@ -99,7 +130,7 @@
       background-size: cover; 
       color: #5c3545;
       width: 90%;
-      max-width: 420px; /* Lebar tombol diperbesar */
+      max-width: 420px;
       height: 52px;
       border: none;
       border-radius: 30px;
@@ -126,7 +157,7 @@
 
     .btn-journey:hover {
       filter: brightness(0.92);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
 
     .btn-journey:active {
@@ -489,11 +520,11 @@
 <body>
 
   <!-- HALAMAN 1 -->
-  <div id="step1">
+  <div id="step1" class="fade-in">
     <div class="memo-card">
       <div class="sub-subtitle">daem's Birthday Event</div>
       <h1 class="title">Keepsakes<br>in Bloom</h1>
-      <p class="description">Let your cherished moments bloom<br>among the stars in a photostrip ⭐🎞️</p>
+      <p class="description">Let your cherished moments bloom among the stars in a photostrip ⭐🎞️</p>
       <button class="btn-journey" onclick="startCapture()">Begin the Journey</button>
     </div>
   </div>
@@ -586,11 +617,26 @@
     }
 
     function goToStep(stepNumber) {
-      document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.add('hidden');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
 
-      if (stepNumber === 1) document.getElementById('step1').classList.remove('hidden');
-      if (stepNumber === 2) document.getElementById('step2').classList.remove('hidden');
+      step1.classList.add('hidden');
+      step1.classList.remove('fade-in');
+      step2.classList.add('hidden');
+      step2.classList.remove('fade-in');
+
+      if (stepNumber === 1) {
+        step1.classList.remove('hidden');
+        // re-trigger animation fade
+        void step1.offsetWidth; 
+        step1.classList.add('fade-in');
+      }
+      if (stepNumber === 2) {
+        step2.classList.remove('hidden');
+        // re-trigger animation fade
+        void step2.offsetWidth; 
+        step2.classList.add('fade-in');
+      }
     }
 
     function openGallery() { 
