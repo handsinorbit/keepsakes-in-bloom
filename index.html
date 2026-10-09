@@ -68,7 +68,7 @@
       }
     }
 
-    /* HALAMAN 1: KARTU MEMO (DESKTOP / PC) */
+    /* HALAMAN 1: KARTU MEMO */
     #step1 {
       width: 100%;
       display: flex;
@@ -123,7 +123,6 @@
       max-width: 500px;
     }
 
-    /* Styling Tombol Tape Custom Halaman 1 Desktop */
     .btn-journey {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover; 
@@ -181,7 +180,6 @@
       z-index: 2;
     }
 
-    /* Styling Tombol Putih Desktop */
     .btn-white {
       background: #ffffff;
       color: #5c3545;
@@ -215,7 +213,6 @@
       transform: translateY(1px);
     }
 
-    /* Header Halaman 2 & 3 */
     .clean-container .header-step h2 {
       font-family: 'Knewave', system-ui, cursive !important;
       font-size: 3.2rem !important;
@@ -233,7 +230,6 @@
       margin-bottom: 12px !important;
     }
 
-    /* Font Mansalva */
     .clean-container .card-desc,
     .preview-header-title,
     .preview-header-subtitle,
@@ -371,7 +367,6 @@
       margin-bottom: 12px;
     }
 
-    /* SLIDER CONTAINER & CONTROL */
     .preset-slider-container {
       display: flex;
       align-items: center;
@@ -410,7 +405,6 @@
       transform: scale(0.95);
     }
 
-    /* BADGE PRESET */
     .preset-badge-active {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover;
@@ -431,7 +425,6 @@
       user-select: none;
     }
 
-    /* TOMBOL RESET PRESET */
     .btn-reset-preset {
       background: #ffffff;
       color: #7b5263;
@@ -467,14 +460,14 @@
     .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
 
     /* ========================================================
-       HALAMAN 3: PHOTOSTRIP KEEPSAKE FRAME CUSTOM
+       HALAMAN 3: PRESI POSISI FRAME KEEPSAKE (PENYESUAIAN PRESISI)
        ======================================================== */
     .keepsake-frame-wrapper {
       position: relative;
       width: 100%;
-      max-width: 340px;
+      max-width: 280px; /* Lebar proporsional photostrip */
       margin: 0 auto 25px auto;
-      border-radius: 16px;
+      border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       background: #ffffff;
@@ -485,7 +478,7 @@
       height: auto;
       display: block;
       position: relative;
-      z-index: 10;
+      z-index: 10; /* Frame di paling atas */
       pointer-events: none;
     }
 
@@ -495,22 +488,24 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      padding: 18% 10% 22% 10%; /* Area slot foto menyesuaikan frame */
+      z-index: 15; /* Foto di atas frame agar menutupi kotak hitam */
       box-sizing: border-box;
     }
 
+    /* POSISI SANGAT PRESISI UNTUK 3 FOTO MENUTUPI KOTAK HITAM */
     .keepsake-slot {
-      width: 100%;
-      aspect-ratio: 4 / 3;
+      position: absolute;
+      left: 9.8%;
+      width: 80.4%;
+      height: 22.8%;
       overflow: hidden;
-      border-radius: 6px;
-      background: #eee;
+      border-radius: 2px;
+      background: #222;
     }
+
+    .keepsake-slot-1 { top: 5.2%; }
+    .keepsake-slot-2 { top: 31.8%; }
+    .keepsake-slot-3 { top: 58.4%; }
 
     .keepsake-slot img {
       width: 100%;
@@ -665,14 +660,14 @@
       }
 
       .keepsake-frame-wrapper {
-        max-width: 280px !important;
+        max-width: 250px !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- HALAMAN 1: LANDING MEMO CARD -->
+  <!-- HALAMAN 1 -->
   <div id="step1" class="fade-in">
     <div class="memo-card">
       <div class="sub-subtitle">daem's Birthday Event</div>
@@ -682,7 +677,7 @@
     </div>
   </div>
 
-  <!-- HALAMAN 2: PHOTO SELECTION & FILTER -->
+  <!-- HALAMAN 2 -->
   <div id="step2" class="hidden" style="width: 100%;">
     <div class="clean-container">
       
@@ -736,7 +731,7 @@
     </div>
   </div>
 
-  <!-- HALAMAN 3: EDITOR / FINAL KEEPSAKE FRAME -->
+  <!-- HALAMAN 3 -->
   <div id="step3" class="hidden" style="width: 100%;">
     <div class="clean-container">
       
@@ -745,11 +740,11 @@
         <p>Your Bloom Keepsake is Ready!</p>
       </div>
 
-      <!-- KANVAS PHOTOSTRIP CUSTOM FRAME -->
+      <!-- KANVAS FRAME KEEPSAKE PRESISI -->
       <div id="keepsakeCardToDownload" class="keepsake-frame-wrapper">
         <img class="keepsake-frame-bg" src="https://lh3.googleusercontent.com/d/1tEsBoK6gwm1_qxy32lNf6c6a_4X7lQAJ" crossorigin="anonymous" alt="Frame Custom">
         <div id="keepsakeSlotContainer" class="keepsake-photos-overlay">
-          <!-- Foto-foto pilihan akan disuntikkan ke sini secara otomatis -->
+          <!-- 3 Slot Foto Disuntikkan Secara Otomatis -->
         </div>
       </div>
 
@@ -892,7 +887,6 @@
       }
     }
 
-    /* NAVIGASI SLIDER PRESET */
     function navigatePreset(direction) {
       currentPresetIndex += direction;
       if (currentPresetIndex < 0) {
@@ -903,7 +897,6 @@
       updatePresetUI();
     }
 
-    /* FUNGSI RESET KE CLASSIC */
     function resetPresetToClassic() {
       currentPresetIndex = 0;
       updatePresetUI();
@@ -921,16 +914,16 @@
       });
     }
 
-    /* HALAMAN 3 GENERATE & DOWNLOAD */
+    /* GENERATE KEEPSAKE HALAMAN 3 DENGAN PRESISI */
     function generateKeepsake() {
       if (loadedImageUrls.length === 0) return;
 
       const slotContainer = document.getElementById('keepsakeSlotContainer');
       slotContainer.innerHTML = '';
 
-      loadedImageUrls.forEach((url) => {
+      loadedImageUrls.forEach((url, index) => {
         const slot = document.createElement('div');
-        slot.className = 'keepsake-slot';
+        slot.className = `keepsake-slot keepsake-slot-${index + 1}`;
 
         const img = document.createElement('img');
         img.src = url;
@@ -956,7 +949,7 @@
         link.href = canvas.toDataURL('image/png');
         link.click();
       }).catch((err) => {
-        alert('Gagal mendownload gambar. Pastikan koneksi internet stabil!');
+        alert('Gagal mendownload gambar. Silakan coba lagi!');
       });
     }
   </script>
