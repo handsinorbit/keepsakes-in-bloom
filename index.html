@@ -39,22 +39,30 @@
       display: none !important;
     }
 
+    /* ANIMASI FADE-IN SAAT PINDAH HALAMAN */
     .fade-in {
       animation: fadeIn 0.5s ease-in-out forwards;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
+    /* ANIMASI GOYANG / MELAYANG UNTUK MEMO CARD */
     @keyframes floatMemo {
       0% { transform: translateY(0px) rotate(0deg); }
       50% { transform: translateY(-8px) rotate(0.8deg); }
       100% { transform: translateY(0px) rotate(0deg); }
     }
 
-    /* HALAMAN 1 */
+    /* HALAMAN 1: KARTU MEMO */
     #step1 {
       width: 100%;
       display: flex;
@@ -84,6 +92,8 @@
       font-size: 1.15rem;
       color: #7b5263;
       margin-bottom: 2px;
+      position: relative;
+      z-index: 1;
       white-space: nowrap;
     }
 
@@ -119,6 +129,7 @@
       font-family: 'Delicious Handrawn', cursive;
       font-size: 1.45rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       transition: filter 0.3s ease, transform 0.2s ease;
@@ -128,13 +139,25 @@
       margin-top: 2px; 
       margin-bottom: 4px;
       text-decoration: none;
-      text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
+      text-shadow: 
+        1px 1px 0px #ffffff,
+       -1px -1px 0px #ffffff,
+        1px 1px 0px #ffffff,
+       -1px 1px 0px #ffffff,
+        0px 2px 4px rgba(0, 0, 0, 0.25);
     }
 
-    .btn-journey:hover { filter: brightness(0.92); transform: translateY(-2px); }
-    .btn-journey:active { filter: brightness(0.85); transform: translateY(1px); }
+    .btn-journey:hover {
+      filter: brightness(0.92);
+      transform: translateY(-2px);
+    }
 
-    /* HALAMAN 2 & 3 */
+    .btn-journey:active {
+      filter: brightness(0.85);
+      transform: translateY(1px);
+    }
+
+    /* HALAMAN 2 & 3 CONTAINER */
     .clean-container {
       background-color: #f2f2e6;
       width: 92%;
@@ -162,6 +185,7 @@
       font-family: 'Delicious Handrawn', cursive;
       font-size: 1.45rem;
       font-weight: 700;
+      letter-spacing: 0.5px;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       transition: filter 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
@@ -171,18 +195,32 @@
       margin-bottom: 8px;
     }
 
+    .btn-white:hover {
+      background-color: #f7ebf0;
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+    }
+
+    .btn-white:active {
+      background-color: #f0dee5;
+      filter: brightness(0.88);
+      transform: translateY(1px);
+    }
+
     .clean-container .header-step h2 {
       font-family: 'Knewave', system-ui, cursive !important;
       font-size: 3.2rem !important;
       color: #EB5289 !important;
       margin-bottom: 8px !important;
       line-height: 1.1;
+      letter-spacing: 1px;
     }
 
     .clean-container .header-step p {
       font-family: 'Momo Signature', cursive !important;
       font-size: 1.3rem !important;
       color: #7b5263 !important;
+      margin-top: 4px !important;
       margin-bottom: 12px !important;
     }
 
@@ -200,14 +238,29 @@
       margin-bottom: 20px !important;
       text-align: center;
       max-width: 440px !important;
+      line-height: 1.3;
+      font-weight: 400;
     }
 
-    .preview-header-title { font-size: 1.8rem; font-weight: 700; margin-top: 15px; margin-bottom: 2px; }
-    .preview-header-subtitle { font-size: 1.15rem; color: #7b5263; margin-bottom: 16px; }
+    .preview-header-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2b1e23;
+      margin-top: 15px;
+      margin-bottom: 2px;
+    }
+
+    .preview-header-subtitle {
+      font-size: 1.15rem;
+      color: #7b5263;
+      margin-bottom: 16px;
+    }
 
     .camera-icon {
       font-size: 48px;
       margin-bottom: 10px;
+      line-height: 1;
+      display: inline-block;
       animation: floatCamera 2s ease-in-out infinite;
     }
 
@@ -222,10 +275,37 @@
       margin: 12px 0 14px 0;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
     }
 
-    /* PREVIEW POLAROID */
+    .hourglass-icon {
+      display: inline-block;
+      animation: spinHourglass 2.5s ease-in-out infinite;
+    }
+
+    @keyframes spinHourglass {
+      0% { transform: rotate(0deg); }
+      50%, 100% { transform: rotate(180deg); }
+    }
+
+    .dots::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      text-align: left;
+      animation: animateDots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes animateDots {
+      0%   { content: ''; }
+      25%  { content: '.'; }
+      50%  { content: '..'; }
+      75%  { content: '...'; }
+      100% { content: ''; }
+    }
+
+    /* Preview Polaroid Desktop */
     .preview-container {
       display: flex;
       gap: 12px;
@@ -267,11 +347,19 @@
       font-family: 'Poppins', sans-serif;
       font-weight: 600;
       color: #7b5263;
+      z-index: 5;
     }
 
-    /* PRESETS */
-    .mood-section { width: 100%; margin-bottom: 22px; }
-    .mood-title { font-size: 1.35rem !important; margin-bottom: 12px; }
+    /* SECTION MOOD / PRESET SLIDER */
+    .mood-section {
+      width: 100%;
+      margin-bottom: 22px;
+    }
+
+    .mood-title {
+      font-size: 1.35rem !important;
+      margin-bottom: 12px;
+    }
 
     .preset-slider-container {
       display: flex;
@@ -297,6 +385,18 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .slider-arrow:hover {
+      background: #f7ebf0;
+      transform: scale(1.05);
+    }
+
+    .slider-arrow:active {
+      transform: scale(0.95);
     }
 
     .preset-badge-active {
@@ -312,7 +412,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      cursor: default;
+      user-select: none;
     }
 
     .btn-reset-preset {
@@ -326,34 +430,48 @@
       font-weight: 700;
       cursor: pointer;
       margin-top: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
 
-    /* FILTERS */
+    .btn-reset-preset:hover {
+      background: #f7ebf0;
+      transform: translateY(-1px);
+    }
+
+    .btn-reset-preset:active {
+      transform: translateY(1px);
+    }
+
+    /* Definisi Filter CSS */
     .filter-classic    { filter: none; }
     .filter-bloom      { filter: brightness(1.08) contrast(0.9) saturate(1.15); }
     .filter-softglow   { filter: brightness(1.12) contrast(0.85) saturate(0.8); }
     .filter-vintage    { filter: brightness(0.95) contrast(1.05) sepia(0.25) saturate(0.85); }
     .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
 
-    /* FRAME PHOTOSTRIP UTAMA */
+    /* ========================================================
+       HALAMAN 3: FRAME & D-PAD NAVIGATOR INTERAKTIF
+       ======================================================== */
     .keepsake-frame-wrapper {
       position: relative;
-      width: 280px;
-      height: 700px;
+      width: 100%;
+      max-width: 280px;
       margin: 0 auto 15px auto;
       border-radius: 8px;
-      overflow: hidden;
+      overflow: visible;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       background: #ffffff;
     }
 
     .keepsake-frame-bg {
       width: 100%;
-      height: 100%;
+      height: auto;
       display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
       z-index: 10;
       pointer-events: none;
     }
@@ -364,39 +482,51 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 5;
+      z-index: 15;
+      box-sizing: border-box;
     }
 
     .keepsake-slot {
       position: absolute;
-      left: 27px;
-      width: 226px;
-      height: 160px;
+      left: 9.8%;
+      width: 80.4%;
+      height: 0;
+      padding-top: 60.3%;
       overflow: hidden;
       border-radius: 2px;
       background: #222;
       cursor: pointer;
+      box-sizing: border-box;
+      transition: outline 0.15s ease, outline-offset 0.15s ease;
     }
 
-    .keepsake-slot-1 { top: 36px; }
-    .keepsake-slot-2 { top: 222px; }
-    .keepsake-slot-3 { top: 408px; }
+    .keepsake-slot-1 { top: 5.2%; }
+    .keepsake-slot-2 { top: 31.8%; }
+    .keepsake-slot-3 { top: 58.4%; }
 
+    /* OUTLINE PINK DILUAR FOTO */
     .keepsake-slot.selected {
       outline: 3px solid #EB5289 !important;
-      outline-offset: -3px !important;
+      outline-offset: 3px !important;
       z-index: 20;
     }
 
     .keepsake-slot img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       transform-origin: center center;
+      transition: transform 0.05s linear;
+      user-select: none;
+      pointer-events: none;
+      -webkit-user-select: none;
     }
 
-    /* CONTROLS D-PAD */
+    /* KONTROL NAVIGATOR (D-PAD & ZOOM CUTE PASTEL PINK) */
     .navigator-control-section {
       display: flex;
       align-items: center;
@@ -407,9 +537,14 @@
       padding: 14px 22px;
       border-radius: 22px;
       border: 1px solid #ebd4db;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
-    .dpad-container { position: relative; width: 102px; height: 102px; }
+    .dpad-container {
+      position: relative;
+      width: 102px;
+      height: 102px;
+    }
 
     .dpad-btn {
       position: absolute;
@@ -424,16 +559,33 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.06);
       user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .dpad-btn:hover {
+      background: #fca1be;
+      color: #ffffff;
+    }
+
+    .dpad-btn:active {
+      background: #EB5289;
+      color: #ffffff;
+      transform: scale(0.93);
     }
 
     .dpad-up    { top: 0; left: 34px; border-radius: 10px 10px 0 0; }
     .dpad-down  { bottom: 0; left: 34px; border-radius: 0 0 10px 10px; }
     .dpad-left  { top: 34px; left: 0; border-radius: 10px 0 0 10px; }
     .dpad-right { top: 34px; right: 0; border-radius: 0 10px 10px 0; }
-    .dpad-center { top: 34px; left: 34px; background: #f2cdd7; border-color: #ebd4db; pointer-events: none; }
+    .dpad-center { top: 34px; left: 34px; background: #f2cdd7; border-color: #ebd4db; pointer-events: none; box-shadow: none; }
 
-    .zoom-controls { display: flex; flex-direction: column; gap: 8px; }
+    .zoom-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
     .btn-zoom {
       background: #ffffff;
@@ -445,9 +597,19 @@
       font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
     }
 
-    /* TOAST MODAL */
+    .btn-zoom:hover {
+      background: #ffd6e0;
+    }
+
+    .btn-zoom:active {
+      transform: scale(0.95);
+    }
+
+    /* NOTIFIKASI POPUP CUSTOM */
     .custom-toast-overlay {
       position: fixed;
       top: 0;
@@ -471,22 +633,132 @@
       max-width: 320px;
       width: 90%;
       text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    .toast-icon { font-size: 2.8rem; margin-bottom: 8px; }
-    .toast-title { font-family: 'Knewave', cursive; color: #EB5289; font-size: 1.6rem; margin-bottom: 6px; }
-    .toast-message { font-family: 'Mansalva', cursive; font-size: 1.1rem; color: #5c3545; margin-bottom: 16px; }
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
-    #galleryInput { display: none; }
+    .toast-icon {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+    }
 
+    .toast-title {
+      font-family: 'Knewave', cursive;
+      color: #EB5289;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    .toast-message {
+      font-family: 'Mansalva', cursive;
+      font-size: 1.1rem;
+      color: #5c3545;
+      margin-bottom: 16px;
+    }
+
+    #galleryInput {
+      display: none;
+    }
+
+    /* ========================================================
+       KHUSUS TAMPILAN HP (MAX-WIDTH 600PX)
+       ======================================================== */
     @media (max-width: 600px) {
-      body { padding: 15px 8px; }
-      .clean-container { padding: 25px 14px !important; }
-      .keepsake-frame-wrapper { width: 250px !important; height: 625px !important; }
-      .keepsake-slot { left: 24px !important; width: 202px !important; height: 143px !important; }
-      .keepsake-slot-1 { top: 32px !important; }
-      .keepsake-slot-2 { top: 198px !important; }
-      .keepsake-slot-3 { top: 364px !important; }
+      body {
+        padding: 15px 8px;
+        background-attachment: scroll;
+      }
+
+      #step1 { padding: 0 10px; }
+
+      #step1 .memo-card {
+        max-width: 100%;
+        padding: 16% 12% 10% 12%;
+      }
+
+      .sub-subtitle { font-size: 0.78rem; margin-bottom: 2px; }
+      .title { font-size: 2.15rem; margin-bottom: 6px; line-height: 1.05; }
+      .description { font-size: 0.78rem; margin-bottom: 8px; line-height: 1.15; }
+
+      #step1 .btn-journey {
+        font-size: 1.05rem; 
+        height: 36px;
+        max-width: 220px;
+        margin-top: 2px;
+      }
+
+      .clean-container {
+        padding: 25px 14px !important;
+        border-radius: 22px !important;
+      }
+
+      .preview-container {
+        justify-content: flex-start !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        padding: 5px 10px 15px 10px !important;
+        gap: 12px !important;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .polaroid-card {
+        width: 75% !important;
+        flex-shrink: 0 !important;
+        scroll-snap-align: center;
+        padding: 8px 8px 24px 8px !important;
+        border-radius: 12px !important;
+      }
+
+      .polaroid-number {
+        font-size: 0.85rem !important;
+        bottom: 6px !important;
+        right: 12px !important;
+      }
+
+      .clean-container .header-step h2 { font-size: 2rem !important; margin-bottom: 4px !important; }
+      .clean-container .header-step p { font-size: 0.95rem !important; margin-bottom: 8px !important; }
+      .clean-container .card-desc { font-size: 0.95rem !important; margin-bottom: 14px !important; }
+      .preview-header-title { font-size: 1.3rem !important; }
+      .preview-header-subtitle { font-size: 0.85rem !important; margin-bottom: 12px !important; }
+      .mood-title { font-size: 1rem !important; margin-bottom: 8px !important; }
+      .camera-icon { font-size: 36px !important; margin-bottom: 6px !important; }
+      .waiting-text { font-size: 0.88rem !important; margin: 8px 0 10px 0 !important; }
+
+      .clean-container .btn-journey,
+      .clean-container .btn-white {
+        width: 100% !important;
+        max-width: 240px !important;
+        height: 38px !important;
+        font-size: 1.05rem !important;
+        border-radius: 20px !important;
+        margin-bottom: 8px !important;
+      }
+
+      .preset-slider-container { gap: 10px; max-width: 280px; }
+      .slider-arrow { width: 38px; height: 38px; font-size: 1rem; }
+      .preset-badge-active { width: 165px; height: 40px; font-size: 1.1rem; }
+      .btn-reset-preset { padding: 3px 8px !important; font-size: 0.8rem !important; margin-top: 8px !important; }
+      .keepsake-frame-wrapper { max-width: 250px !important; }
+
+      .navigator-control-section {
+        padding: 10px 14px;
+        gap: 14px;
+      }
+
+      .dpad-container { width: 84px; height: 84px; }
+      .dpad-btn { width: 28px; height: 28px; font-size: 0.85rem; }
+      .dpad-up    { left: 28px; }
+      .dpad-down  { left: 28px; }
+      .dpad-left  { top: 28px; }
+      .dpad-right { top: 28px; }
+      .dpad-center { top: 28px; left: 28px; }
+
+      .btn-zoom { padding: 4px 10px; font-size: 0.88rem; }
     }
   </style>
 </head>
@@ -505,6 +777,7 @@
   <!-- HALAMAN 2 -->
   <div id="step2" class="hidden" style="width: 100%;">
     <div class="clean-container">
+      
       <div class="header-step" style="text-align: center; margin-bottom: 15px;">
         <h2>Keepsakes in Bloom</h2>
         <p>Craft Your Memories</p>
@@ -512,10 +785,15 @@
 
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <div class="camera-icon">📷</div>
-        <p class="card-desc">Pick three favorite moments to build your keepsakes.</p>
+        
+        <p class="card-desc">
+          Pick three favorite moments to build your keepsakes.
+        </p>
+        
         <button id="btnAddPhotos" class="btn-journey" onclick="openGallery()">Add Photos From Gallery</button>
+
         <div id="waitingText" class="waiting-text">
-          <span>⏳</span> Waiting for your photos...
+          <span class="hourglass-icon">⏳</span> Waiting for your photos<span class="dots"></span>
         </div>
       </div>
 
@@ -527,6 +805,7 @@
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
       <div id="previewContainer" class="preview-container hidden"></div>
 
+      <!-- Selection Present Theme -->
       <div id="moodSection" class="mood-section hidden">
         <h3 class="mood-title">Select Present Theme</h3>
         <div class="preset-slider-container">
@@ -539,27 +818,34 @@
         </div>
       </div>
 
+      <!-- Action Buttons -->
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <button id="btnApply" class="btn-journey hidden" onclick="generateKeepsake()">📷 Generate Keepsake</button>
         <button id="btnBackToGallery" class="btn-white hidden" onclick="openGallery()">← Change Photos</button>
         <button id="btnBack" class="btn-white" onclick="resetAndBackToHome()">← Go Back To Home</button>
       </div>
+
     </div>
   </div>
 
   <!-- HALAMAN 3 -->
   <div id="step3" class="hidden" style="width: 100%;">
     <div class="clean-container">
+      
       <div class="header-step" style="text-align: center; margin-bottom: 12px;">
         <h2>Keepsakes in Bloom</h2>
         <p>Click photo to adjust position & zoom ✨</p>
       </div>
 
+      <!-- KANVAS FRAME KEEPSAKE PRESISI -->
       <div id="keepsakeCardToDownload" class="keepsake-frame-wrapper">
-        <img id="frameBgImg" class="keepsake-frame-bg" src="https://lh3.googleusercontent.com/d/1tEsBoK6gwm1_qxy32lNf6c6a_4X7lQAJ" crossorigin="anonymous" alt="Frame Custom">
-        <div id="keepsakeSlotContainer" class="keepsake-photos-overlay"></div>
+        <img class="keepsake-frame-bg" src="https://lh3.googleusercontent.com/d/1tEsBoK6gwm1_qxy32lNf6c6a_4X7lQAJ" crossorigin="anonymous" alt="Frame Custom">
+        <div id="keepsakeSlotContainer" class="keepsake-photos-overlay">
+          <!-- 3 Slot Foto Disuntikkan Secara Otomatis -->
+        </div>
       </div>
 
+      <!-- D-PAD & ZOOM NAVIGATOR CONTROL -->
       <div class="navigator-control-section">
         <div class="dpad-container">
           <button class="dpad-btn dpad-up" onclick="movePhoto('up')">▲</button>
@@ -568,21 +854,24 @@
           <button class="dpad-btn dpad-right" onclick="movePhoto('right')">▶</button>
           <div class="dpad-btn dpad-center"></div>
         </div>
+        
         <div class="zoom-controls">
           <button class="btn-zoom" onclick="zoomPhoto(0.08)">🔍 Zoom In (+)</button>
           <button class="btn-zoom" onclick="zoomPhoto(-0.08)">🔍 Zoom Out (-)</button>
         </div>
       </div>
 
+      <!-- Action Buttons Halaman 3 -->
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <button class="btn-journey" onclick="downloadKeepsake()">✨ Download Keepsake</button>
         <button class="btn-white" onclick="goToStep(2)">← Edit / Change Theme</button>
         <button class="btn-white" onclick="resetAndBackToHome()">🌸 Start Over</button>
       </div>
+
     </div>
   </div>
 
-  <!-- TOAST SAVED -->
+  <!-- POPUP NOTIFIKASI SAVED LUCU -->
   <div id="customToast" class="custom-toast-overlay hidden">
     <div class="custom-toast-box">
       <div class="toast-icon">🌸✨</div>
@@ -594,17 +883,18 @@
 
   <script>
     const presetsList = [
-      { name: 'Classic', filter: 'filter-classic' },
-      { name: 'Bloom', filter: 'filter-bloom' },
-      { name: 'Soft Glow', filter: 'filter-softglow' },
-      { name: 'Vintage', filter: 'filter-vintage' },
-      { name: 'Warm Daylight', filter: 'filter-warmdaylight' }
+      { name: 'Classic', filter: 'classic' },
+      { name: 'Bloom', filter: 'bloom' },
+      { name: 'Soft Glow', filter: 'softglow' },
+      { name: 'Vintage', filter: 'vintage' },
+      { name: 'Warm Daylight', filter: 'warmdaylight' }
     ];
 
     let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
     let loadedImageUrls = [];
 
+    // State Posisi & Zoom per Slot Foto (3 Slot)
     let photoTransforms = [
       { x: 0, y: 0, scale: 1 },
       { x: 0, y: 0, scale: 1 },
@@ -612,16 +902,25 @@
     ];
     let activeSlotIndex = 0;
 
-    function startCapture() { resetAllData(); goToStep(2); }
-    function resetAndBackToHome() { resetAllData(); goToStep(1); }
+    function startCapture() {
+      resetAllData();
+      goToStep(2);
+    }
+
+    function resetAndBackToHome() {
+      resetAllData();
+      goToStep(1);
+    }
 
     function resetAllData() {
       document.getElementById('galleryInput').value = '';
       document.getElementById('previewContainer').innerHTML = '';
       document.getElementById('previewContainer').classList.add('hidden');
+      
       document.getElementById('btnAddPhotos').classList.remove('hidden');
       document.getElementById('waitingText').classList.remove('hidden');
       document.getElementById('previewHeaderView').classList.add('hidden');
+
       document.getElementById('moodSection').classList.add('hidden');
       document.getElementById('btnApply').classList.add('hidden');
       document.getElementById('btnBackToGallery').classList.add('hidden');
@@ -638,21 +937,42 @@
     }
 
     function goToStep(stepNumber) {
-      document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.add('hidden');
-      document.getElementById('step3').classList.add('hidden');
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
 
-      const target = document.getElementById(`step${stepNumber}`);
-      target.classList.remove('hidden');
-      void target.offsetWidth;
-      target.classList.add('fade-in');
+      step1.classList.add('hidden');
+      step1.classList.remove('fade-in');
+      step2.classList.add('hidden');
+      step2.classList.remove('fade-in');
+      step3.classList.add('hidden');
+      step3.classList.remove('fade-in');
+
+      if (stepNumber === 1) {
+        step1.classList.remove('hidden');
+        void step1.offsetWidth; 
+        step1.classList.add('fade-in');
+      } else if (stepNumber === 2) {
+        step2.classList.remove('hidden');
+        void step2.offsetWidth; 
+        step2.classList.add('fade-in');
+      } else if (stepNumber === 3) {
+        step3.classList.remove('hidden');
+        void step3.offsetWidth; 
+        step3.classList.add('fade-in');
+      }
     }
 
-    function openGallery() { document.getElementById('galleryInput').click(); }
+    function openGallery() { 
+      document.getElementById('galleryInput').click(); 
+    }
 
     function handleImageSelect(event) {
       const files = event.target.files;
       const previewContainer = document.getElementById('previewContainer');
+      const moodSection = document.getElementById('moodSection');
+      const btnApply = document.getElementById('btnApply');
+
       previewContainer.innerHTML = '';
 
       if (files.length > 0) {
@@ -662,15 +982,18 @@
         const photosToDisplay = Array.from(files).slice(0, 3);
         document.getElementById('photoCountLabel').innerText = `Moments Loaded (${photosToDisplay.length}/3)`;
         document.getElementById('previewHeaderView').classList.remove('hidden');
+        
         previewContainer.classList.remove('hidden');
-        document.getElementById('moodSection').classList.remove('hidden');
-        document.getElementById('btnApply').classList.remove('hidden');
+        moodSection.classList.remove('hidden');
+        btnApply.classList.remove('hidden');
         document.getElementById('btnBackToGallery').classList.remove('hidden');
 
         const readPromises = photosToDisplay.map((file) => {
           return new Promise((resolve) => {
             const reader = new FileReader();
-            reader.onload = (e) => resolve(e.target.result);
+            reader.onload = function(e) {
+              resolve(e.target.result);
+            };
             reader.readAsDataURL(file);
           });
         });
@@ -680,6 +1003,7 @@
           results.forEach((dataUrl, index) => {
             const card = document.createElement('div');
             card.className = 'polaroid-card';
+
             const imgWrapper = document.createElement('div');
             imgWrapper.className = 'polaroid-img-wrapper';
 
@@ -702,25 +1026,35 @@
 
     function navigatePreset(direction) {
       currentPresetIndex += direction;
-      if (currentPresetIndex < 0) currentPresetIndex = presetsList.length - 1;
-      if (currentPresetIndex >= presetsList.length) currentPresetIndex = 0;
+      if (currentPresetIndex < 0) {
+        currentPresetIndex = presetsList.length - 1;
+      } else if (currentPresetIndex >= presetsList.length) {
+        currentPresetIndex = 0;
+      }
       updatePresetUI();
     }
 
-    function resetPresetToClassic() { currentPresetIndex = 0; updatePresetUI(); }
+    function resetPresetToClassic() {
+      currentPresetIndex = 0;
+      updatePresetUI();
+    }
 
     function updatePresetUI() {
       const preset = presetsList[currentPresetIndex];
-      document.getElementById('presetDisplay').innerText = preset.name;
-      selectedFilterClass = preset.filter;
+      const presetDisplay = document.getElementById('presetDisplay');
+      
+      presetDisplay.innerText = preset.name;
+      selectedFilterClass = `filter-${preset.filter}`;
 
       document.querySelectorAll('.polaroid-img-wrapper img, .keepsake-slot img').forEach(img => {
         img.className = selectedFilterClass;
       });
     }
 
+    /* HALAMAN 3 GENERATE & SELECT SLOT */
     function generateKeepsake() {
       if (loadedImageUrls.length === 0) return;
+
       const slotContainer = document.getElementById('keepsakeSlotContainer');
       slotContainer.innerHTML = '';
 
@@ -745,14 +1079,19 @@
     function selectSlot(index) {
       activeSlotIndex = index;
       document.querySelectorAll('.keepsake-slot').forEach((slot, i) => {
-        if (i === activeSlotIndex) slot.classList.add('selected');
-        else slot.classList.remove('selected');
+        if (i === activeSlotIndex) {
+          slot.classList.add('selected');
+        } else {
+          slot.classList.remove('selected');
+        }
       });
     }
 
+    /* KONTROL GESER & ZOOM FOTO */
     function movePhoto(direction) {
       const step = 4;
       const current = photoTransforms[activeSlotIndex];
+
       if (direction === 'up') current.y -= step;
       if (direction === 'down') current.y += step;
       if (direction === 'left') current.x -= step;
@@ -765,6 +1104,7 @@
     function zoomPhoto(amount) {
       const current = photoTransforms[activeSlotIndex];
       current.scale = Math.max(0.5, Math.min(3.0, current.scale + amount));
+
       const targetImg = document.getElementById(`keepsakeImg_${activeSlotIndex}`);
       if (targetImg) applyTransformToImg(targetImg, current);
     }
@@ -773,30 +1113,30 @@
       imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
     }
 
-    /* DOWNLOAD RESMI TERPERCAYA (HTML2CANVAS PRESISI) */
+    /* DOWNLOAD UNIVERSAL (STABIL DI IOS, ANDROID & PC WEB DENGAN BLOB) */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
-      // Hapus seleksi pink
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
 
       html2canvas(frameWrapper, {
         useCORS: true,
-        allowTaint: true,
         scale: 3,
         backgroundColor: null
       }).then((canvas) => {
         canvas.toBlob((blob) => {
           if (!blob) {
             selectSlot(activeSlotIndex);
-            alert('Gagal mendownload gambar.');
+            alert('Gagal mendownload gambar. Silakan coba lagi!');
             return;
           }
 
           const blobUrl = URL.createObjectURL(blob);
           const link = document.createElement('a');
+          link.style.display = 'none';
           link.href = blobUrl;
           link.download = 'keepsake-in-bloom.png';
+
           document.body.appendChild(link);
           link.click();
 
@@ -810,12 +1150,18 @@
         }, 'image/png');
       }).catch((err) => {
         selectSlot(activeSlotIndex);
-        alert('Gagal mendownload. Silakan coba lagi!');
+        alert('Gagal mendownload gambar. Silakan coba lagi!');
       });
     }
 
-    function showToast() { document.getElementById('customToast').classList.remove('hidden'); }
-    function closeToast() { document.getElementById('customToast').classList.add('hidden'); }
+    function showToast() {
+      document.getElementById('customToast').classList.remove('hidden');
+    }
+
+    function closeToast() {
+      document.getElementById('customToast').classList.add('hidden');
+    }
   </script>
+
 </body>
 </html>
