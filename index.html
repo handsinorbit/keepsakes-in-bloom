@@ -149,7 +149,7 @@
       text-shadow: 
         1px 1px 0px #ffffff,
        -1px -1px 0px #ffffff,
-        1px 1px 0px #ffffff,
+        1px -1px 0px #ffffff,
        -1px 1px 0px #ffffff,
         0px 2px 4px rgba(0, 0, 0, 0.25);
     }
@@ -360,7 +360,7 @@
       z-index: 5;
     }
 
-    /* SECTION MOOD / PRESET BUTTONS */
+    /* SECTION MOOD / PRESET SLIDER */
     .mood-section {
       width: 100%;
       margin-bottom: 22px;
@@ -371,37 +371,67 @@
       margin-bottom: 10px;
     }
 
-    .filter-options {
+    /* SLIDER CONTAINER & CONTROL (UKURAN RINGKAS MUNGIL) */
+    .preset-slider-container {
       display: flex;
-      gap: 8px;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto;
     }
 
-    .filter-btn {
+    .slider-arrow {
       background: #ffffff;
-      border: 1px solid #ebd4db;
-      padding: 8px 18px;
-      border-radius: 25px;
-      font-size: 1.1rem;
       color: #5c3545;
+      border: 1px solid #ebd4db;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 0.95rem;
+      font-weight: bold;
       cursor: pointer;
-      font-family: 'Delicious Handrawn', cursive;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+      user-select: none;
+      flex-shrink: 0;
     }
 
-    .filter-btn.active {
+    .slider-arrow:hover {
+      background: #f7ebf0;
+      transform: scale(1.05);
+    }
+
+    .slider-arrow:active {
+      transform: scale(0.95);
+    }
+
+    /* BADGE PRESET YANG TAMPIL UTAMA */
+    .preset-badge-active {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover;
       color: #5c3545;
-      border-color: transparent;
+      width: 150px;
+      height: 36px;
+      border-radius: 20px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
       text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      cursor: default;
+      user-select: none;
     }
 
-    /* TOMBOL RESET PRESET (MUNGIL & RINGKAS) */
+    /* TOMBOL RESET PRESET (MUNGIL) */
     .btn-reset-preset {
       background: #ffffff;
       color: #7b5263;
@@ -412,7 +442,7 @@
       font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 8px;
       transition: all 0.2s ease;
       box-shadow: 0 2px 4px rgba(0,0,0,0.03);
       display: inline-flex;
@@ -563,15 +593,28 @@
         margin-bottom: 8px !important;
       }
 
-      .filter-btn {
-        padding: 5px 12px !important;
-        font-size: 0.88rem !important;
+      /* Slider di HP Ringkas */
+      .preset-slider-container {
+        gap: 8px;
+        max-width: 240px;
+      }
+
+      .slider-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+      }
+
+      .preset-badge-active {
+        width: 130px;
+        height: 34px;
+        font-size: 1rem;
       }
 
       .btn-reset-preset {
         padding: 3px 8px !important;
         font-size: 0.8rem !important;
-        margin-top: 8px !important;
+        margin-top: 6px !important;
       }
     }
   </style>
@@ -621,15 +664,13 @@
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
       <div id="previewContainer" class="preview-container hidden"></div>
 
-      <!-- Selection Present Theme -->
+      <!-- Selection Present Theme (SLIDER VERSION) -->
       <div id="moodSection" class="mood-section hidden">
         <h3 class="mood-title">Select Present Theme</h3>
-        <div class="filter-options">
-          <button class="filter-btn active" onclick="applyFilter('classic', this)">Classic</button>
-          <button class="filter-btn" onclick="applyFilter('bloom', this)">Bloom</button>
-          <button class="filter-btn" onclick="applyFilter('softglow', this)">Soft Glow</button>
-          <button class="filter-btn" onclick="applyFilter('vintage', this)">Vintage</button>
-          <button class="filter-btn" onclick="applyFilter('warmdaylight', this)">Warm Daylight</button>
+        <div class="preset-slider-container">
+          <button class="slider-arrow" onclick="navigatePreset(-1)">←</button>
+          <div id="presetDisplay" class="preset-badge-active">Classic</div>
+          <button class="slider-arrow" onclick="navigatePreset(1)">→</button>
         </div>
         <div>
           <button class="btn-reset-preset" onclick="resetPresetToClassic()">↺ Reset Preset</button>
@@ -647,6 +688,15 @@
   </div>
 
   <script>
+    const presetsList = [
+      { name: 'Classic', filter: 'classic' },
+      { name: 'Bloom', filter: 'bloom' },
+      { name: 'Soft Glow', filter: 'softglow' },
+      { name: 'Vintage', filter: 'vintage' },
+      { name: 'Warm Daylight', filter: 'warmdaylight' }
+    ];
+
+    let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
 
     function startCapture() {
@@ -672,7 +722,8 @@
       document.getElementById('btnApply').classList.add('hidden');
       document.getElementById('btnBackToGallery').classList.add('hidden');
 
-      resetPresetToClassic();
+      currentPresetIndex = 0;
+      updatePresetUI();
     }
 
     function goToStep(stepNumber) {
@@ -756,23 +807,33 @@
       }
     }
 
-    function applyFilter(filterName, btnElement) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
-
-      selectedFilterClass = `filter-${filterName}`;
-
-      document.querySelectorAll('.polaroid-img-wrapper img').forEach(img => {
-        img.className = selectedFilterClass;
-      });
+    /* NAVIGASI SLIDER PRESET */
+    function navigatePreset(direction) {
+      currentPresetIndex += direction;
+      if (currentPresetIndex < 0) {
+        currentPresetIndex = presetsList.length - 1;
+      } else if (currentPresetIndex >= presetsList.length) {
+        currentPresetIndex = 0;
+      }
+      updatePresetUI();
     }
 
     /* FUNGSI RESET KE CLASSIC */
     function resetPresetToClassic() {
-      const classicBtn = document.querySelectorAll('.filter-btn')[0];
-      if (classicBtn) {
-        applyFilter('classic', classicBtn);
-      }
+      currentPresetIndex = 0;
+      updatePresetUI();
+    }
+
+    function updatePresetUI() {
+      const preset = presetsList[currentPresetIndex];
+      const presetDisplay = document.getElementById('presetDisplay');
+      
+      presetDisplay.innerText = preset.name;
+      selectedFilterClass = `filter-${preset.filter}`;
+
+      document.querySelectorAll('.polaroid-img-wrapper img').forEach(img => {
+        img.className = selectedFilterClass;
+      });
     }
   </script>
 
