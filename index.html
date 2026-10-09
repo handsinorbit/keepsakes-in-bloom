@@ -378,7 +378,7 @@
       justify-content: center;
       gap: 12px;
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       margin: 0 auto;
     }
 
@@ -429,6 +429,34 @@
       transition: transform 0.25s ease, opacity 0.25s ease;
       cursor: default;
       user-select: none;
+    }
+
+    /* TOMBOL RESET PRESET */
+    .btn-reset-preset {
+      background: #ffffff;
+      color: #7b5263;
+      border: 1px solid #ebd4db;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-reset-preset:hover {
+      background: #f7ebf0;
+      transform: translateY(-1px);
+    }
+
+    .btn-reset-preset:active {
+      transform: translateY(1px);
     }
 
     /* Definisi Filter CSS */
@@ -501,7 +529,7 @@
       }
 
       .polaroid-card {
-        width: 75% !important; /* Ukuran gambar diperbesar jauh lebih jelas di HP */
+        width: 75% !important;
         flex-shrink: 0 !important;
         scroll-snap-align: center;
         padding: 8px 8px 24px 8px !important;
@@ -578,9 +606,15 @@
       }
 
       .preset-badge-active {
-        width: 160px;
+        width: 150px;
         height: 38px;
         font-size: 1.05rem;
+      }
+
+      .btn-reset-preset {
+        padding: 4px 10px;
+        font-size: 0.88rem;
+        margin-top: 8px;
       }
     }
   </style>
@@ -630,7 +664,7 @@
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
       <div id="previewContainer" class="preview-container hidden"></div>
 
-      <!-- Selection Present Theme (SLIDER VERSION) -->
+      <!-- Selection Present Theme (SLIDER VERSION WITH RESET) -->
       <div id="moodSection" class="mood-section hidden">
         <h3 class="mood-title">Select Present Theme</h3>
         <div class="preset-slider-container">
@@ -638,6 +672,7 @@
           <div id="presetDisplay" class="preset-badge-active">Classic</div>
           <button class="slider-arrow" onclick="navigatePreset(1)">→</button>
         </div>
+        <button class="btn-reset-preset" onclick="resetPresetToClassic()">↺ Reset Preset</button>
       </div>
 
       <!-- Action Buttons -->
@@ -778,6 +813,12 @@
       } else if (currentPresetIndex >= presetsList.length) {
         currentPresetIndex = 0;
       }
+      updatePresetUI();
+    }
+
+    /* FUNGSI RESET KE CLASSIC */
+    function resetPresetToClassic() {
+      currentPresetIndex = 0;
       updatePresetUI();
     }
 
