@@ -55,17 +55,11 @@
       }
     }
 
-    /* ANIMASI GOYANG / MELAYANG (FLOATING) UNTUK MEMO CARD */
+    /* ANIMASI GOYANG / MELAYANG UNTUK MEMO CARD */
     @keyframes floatMemo {
-      0% {
-        transform: translateY(0px) rotate(0deg);
-      }
-      50% {
-        transform: translateY(-8px) rotate(0.8deg);
-      }
-      100% {
-        transform: translateY(0px) rotate(0deg);
-      }
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.8deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
     }
 
     /* HALAMAN 1: KARTU MEMO */
@@ -460,13 +454,13 @@
     .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
 
     /* ========================================================
-       HALAMAN 3: PRESI POSISI FRAME KEEPSAKE (PENYESUAIAN PRESISI)
+       HALAMAN 3: FRAME & D-PAD NAVIGATOR INTERAKTIF
        ======================================================== */
     .keepsake-frame-wrapper {
       position: relative;
       width: 100%;
-      max-width: 280px; /* Lebar proporsional photostrip */
-      margin: 0 auto 25px auto;
+      max-width: 280px;
+      margin: 0 auto 15px auto;
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -478,7 +472,7 @@
       height: auto;
       display: block;
       position: relative;
-      z-index: 10; /* Frame di paling atas */
+      z-index: 10;
       pointer-events: none;
     }
 
@@ -488,11 +482,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 15; /* Foto di atas frame agar menutupi kotak hitam */
+      z-index: 15;
       box-sizing: border-box;
     }
 
-    /* POSISI SANGAT PRESISI UNTUK 3 FOTO MENUTUPI KOTAK HITAM */
     .keepsake-slot {
       position: absolute;
       left: 9.8%;
@@ -501,16 +494,157 @@
       overflow: hidden;
       border-radius: 2px;
       background: #222;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: outline 0.15s ease;
     }
 
     .keepsake-slot-1 { top: 5.2%; }
     .keepsake-slot-2 { top: 31.8%; }
     .keepsake-slot-3 { top: 58.4%; }
 
+    /* TAG/OUTLINE PINK UNTUK FOTO TERPILIH */
+    .keepsake-slot.selected {
+      outline: 3.5px solid #EB5289 !important;
+      outline-offset: -3.5px;
+      z-index: 20;
+    }
+
     .keepsake-slot img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transform-origin: center center;
+      transition: transform 0.05s linear;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* KONTROL NAVIGATOR (D-PAD & ZOOM) */
+    .navigator-control-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      background: #e2e2d5;
+      padding: 12px 20px;
+      border-radius: 20px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.06);
+    }
+
+    .dpad-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .dpad-btn {
+      position: absolute;
+      background: #222225;
+      color: #ffffff;
+      border: none;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+
+    .dpad-btn:active {
+      background: #EB5289;
+      transform: scale(0.93);
+    }
+
+    .dpad-up    { top: 0; left: 34px; border-radius: 6px 6px 0 0; }
+    .dpad-down  { bottom: 0; left: 34px; border-radius: 0 0 6px 6px; }
+    .dpad-left  { top: 34px; left: 0; border-radius: 6px 0 0 6px; }
+    .dpad-right { top: 34px; right: 0; border-radius: 0 6px 6px 0; }
+    .dpad-center { top: 34px; left: 34px; background: #2b2b2e; pointer-events: none; box-shadow: none; }
+
+    .zoom-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-zoom {
+      background: #ffffff;
+      color: #5c3545;
+      border: 1px solid #ebd4db;
+      padding: 6px 14px;
+      border-radius: 15px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .btn-zoom:hover {
+      background: #f7ebf0;
+    }
+
+    .btn-zoom:active {
+      transform: scale(0.95);
+    }
+
+    /* NOTIFIKASI POPUP CUSTOM */
+    .custom-toast-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .custom-toast-box {
+      background: #f9f9f0;
+      border: 3px solid #EB5289;
+      border-radius: 24px;
+      padding: 25px 20px;
+      max-width: 320px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .toast-icon {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+    }
+
+    .toast-title {
+      font-family: 'Knewave', cursive;
+      color: #EB5289;
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    .toast-message {
+      font-family: 'Mansalva', cursive;
+      font-size: 1.1rem;
+      color: #5c3545;
+      margin-bottom: 16px;
     }
 
     #galleryInput {
@@ -526,31 +660,16 @@
         background-attachment: scroll;
       }
 
-      #step1 {
-        padding: 0 10px;
-      }
+      #step1 { padding: 0 10px; }
 
       #step1 .memo-card {
         max-width: 100%;
         padding: 16% 12% 10% 12%;
       }
 
-      .sub-subtitle {
-        font-size: 0.78rem;
-        margin-bottom: 2px;
-      }
-
-      .title {
-        font-size: 2.15rem;
-        margin-bottom: 6px;
-        line-height: 1.05;
-      }
-
-      .description {
-        font-size: 0.78rem;
-        margin-bottom: 8px;
-        line-height: 1.15;
-      }
+      .sub-subtitle { font-size: 0.78rem; margin-bottom: 2px; }
+      .title { font-size: 2.15rem; margin-bottom: 6px; line-height: 1.05; }
+      .description { font-size: 0.78rem; margin-bottom: 8px; line-height: 1.15; }
 
       #step1 .btn-journey {
         font-size: 1.05rem; 
@@ -587,44 +706,14 @@
         right: 12px !important;
       }
 
-      .clean-container .header-step h2 {
-        font-size: 2rem !important;
-        margin-bottom: 4px !important;
-      }
-
-      .clean-container .header-step p {
-        font-size: 0.95rem !important;
-        margin-bottom: 8px !important;
-      }
-
-      .clean-container .card-desc {
-        font-size: 0.95rem !important;
-        margin-bottom: 14px !important;
-      }
-
-      .preview-header-title {
-        font-size: 1.3rem !important;
-      }
-
-      .preview-header-subtitle {
-        font-size: 0.85rem !important;
-        margin-bottom: 12px !important;
-      }
-
-      .mood-title {
-        font-size: 1rem !important;
-        margin-bottom: 8px !important;
-      }
-
-      .camera-icon {
-        font-size: 36px !important;
-        margin-bottom: 6px !important;
-      }
-
-      .waiting-text {
-        font-size: 0.88rem !important;
-        margin: 8px 0 10px 0 !important;
-      }
+      .clean-container .header-step h2 { font-size: 2rem !important; margin-bottom: 4px !important; }
+      .clean-container .header-step p { font-size: 0.95rem !important; margin-bottom: 8px !important; }
+      .clean-container .card-desc { font-size: 0.95rem !important; margin-bottom: 14px !important; }
+      .preview-header-title { font-size: 1.3rem !important; }
+      .preview-header-subtitle { font-size: 0.85rem !important; margin-bottom: 12px !important; }
+      .mood-title { font-size: 1rem !important; margin-bottom: 8px !important; }
+      .camera-icon { font-size: 36px !important; margin-bottom: 6px !important; }
+      .waiting-text { font-size: 0.88rem !important; margin: 8px 0 10px 0 !important; }
 
       .clean-container .btn-journey,
       .clean-container .btn-white {
@@ -636,32 +725,26 @@
         margin-bottom: 8px !important;
       }
 
-      .preset-slider-container {
-        gap: 10px;
-        max-width: 280px;
+      .preset-slider-container { gap: 10px; max-width: 280px; }
+      .slider-arrow { width: 38px; height: 38px; font-size: 1rem; }
+      .preset-badge-active { width: 165px; height: 40px; font-size: 1.1rem; }
+      .btn-reset-preset { padding: 3px 8px !important; font-size: 0.8rem !important; margin-top: 8px !important; }
+      .keepsake-frame-wrapper { max-width: 250px !important; }
+
+      .navigator-control-section {
+        padding: 10px 14px;
+        gap: 14px;
       }
 
-      .slider-arrow {
-        width: 38px;
-        height: 38px;
-        font-size: 1rem;
-      }
+      .dpad-container { width: 84px; height: 84px; }
+      .dpad-btn { width: 28px; height: 28px; font-size: 0.85rem; }
+      .dpad-up    { left: 28px; }
+      .dpad-down  { left: 28px; }
+      .dpad-left  { top: 28px; }
+      .dpad-right { top: 28px; }
+      .dpad-center { top: 28px; left: 28px; }
 
-      .preset-badge-active {
-        width: 165px;
-        height: 40px;
-        font-size: 1.1rem;
-      }
-
-      .btn-reset-preset {
-        padding: 3px 8px !important;
-        font-size: 0.8rem !important;
-        margin-top: 8px !important;
-      }
-
-      .keepsake-frame-wrapper {
-        max-width: 250px !important;
-      }
+      .btn-zoom { padding: 4px 10px; font-size: 0.88rem; }
     }
   </style>
 </head>
@@ -735,9 +818,9 @@
   <div id="step3" class="hidden" style="width: 100%;">
     <div class="clean-container">
       
-      <div class="header-step" style="text-align: center; margin-bottom: 15px;">
+      <div class="header-step" style="text-align: center; margin-bottom: 12px;">
         <h2>Keepsakes in Bloom</h2>
-        <p>Your Bloom Keepsake is Ready!</p>
+        <p>Click photo to adjust position & zoom ✨</p>
       </div>
 
       <!-- KANVAS FRAME KEEPSAKE PRESISI -->
@@ -748,6 +831,22 @@
         </div>
       </div>
 
+      <!-- D-PAD & ZOOM NAVIGATOR CONTROL -->
+      <div class="navigator-control-section">
+        <div class="dpad-container">
+          <button class="dpad-btn dpad-up" onclick="movePhoto('up')">▲</button>
+          <button class="dpad-btn dpad-down" onclick="movePhoto('down')">▼</button>
+          <button class="dpad-btn dpad-left" onclick="movePhoto('left')">◀</button>
+          <button class="dpad-btn dpad-right" onclick="movePhoto('right')">▶</button>
+          <div class="dpad-btn dpad-center"></div>
+        </div>
+        
+        <div class="zoom-controls">
+          <button class="btn-zoom" onclick="zoomPhoto(0.08)">🔍 Zoom In (+)</button>
+          <button class="btn-zoom" onclick="zoomPhoto(-0.08)">🔍 Zoom Out (-)</button>
+        </div>
+      </div>
+
       <!-- Action Buttons Halaman 3 -->
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <button class="btn-journey" onclick="downloadKeepsake()">✨ Download Keepsake</button>
@@ -755,6 +854,16 @@
         <button class="btn-white" onclick="resetAndBackToHome()">🌸 Start Over</button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- POPUP NOTIFIKASI SAVED LUCU -->
+  <div id="customToast" class="custom-toast-overlay hidden">
+    <div class="custom-toast-box">
+      <div class="toast-icon">🌸✨</div>
+      <div class="toast-title">Keepsake Saved!</div>
+      <div class="toast-message">Hasil photostrip-mu sudah berhasil diunduh. Simpan momen manismu ini ya! 💖</div>
+      <button class="btn-journey" style="height: 40px; font-size: 1.1rem; max-width: 160px;" onclick="closeToast()">Yey, Makasih! 🎀</button>
     </div>
   </div>
 
@@ -770,6 +879,14 @@
     let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
     let loadedImageUrls = [];
+
+    // State Posisi & Zoom per Slot Foto (3 Slot)
+    let photoTransforms = [
+      { x: 0, y: 0, scale: 1 },
+      { x: 0, y: 0, scale: 1 },
+      { x: 0, y: 0, scale: 1 }
+    ];
+    let activeSlotIndex = 0; // Slot aktif default
 
     function startCapture() {
       resetAllData();
@@ -796,6 +913,12 @@
 
       loadedImageUrls = [];
       currentPresetIndex = 0;
+      photoTransforms = [
+        { x: 0, y: 0, scale: 1 },
+        { x: 0, y: 0, scale: 1 },
+        { x: 0, y: 0, scale: 1 }
+      ];
+      activeSlotIndex = 0;
       updatePresetUI();
     }
 
@@ -914,7 +1037,7 @@
       });
     }
 
-    /* GENERATE KEEPSAKE HALAMAN 3 DENGAN PRESISI */
+    /* HALAMAN 3 GENERATE & SELECT SLOT */
     function generateKeepsake() {
       if (loadedImageUrls.length === 0) return;
 
@@ -923,11 +1046,14 @@
 
       loadedImageUrls.forEach((url, index) => {
         const slot = document.createElement('div');
-        slot.className = `keepsake-slot keepsake-slot-${index + 1}`;
+        slot.className = `keepsake-slot keepsake-slot-${index + 1} ${index === activeSlotIndex ? 'selected' : ''}`;
+        slot.onclick = () => selectSlot(index);
 
         const img = document.createElement('img');
+        img.id = `keepsakeImg_${index}`;
         img.src = url;
         img.className = selectedFilterClass;
+        applyTransformToImg(img, photoTransforms[index]);
 
         slot.appendChild(img);
         slotContainer.appendChild(slot);
@@ -936,8 +1062,49 @@
       goToStep(3);
     }
 
+    function selectSlot(index) {
+      activeSlotIndex = index;
+      document.querySelectorAll('.keepsake-slot').forEach((slot, i) => {
+        if (i === activeSlotIndex) {
+          slot.classList.add('selected');
+        } else {
+          slot.classList.remove('selected');
+        }
+      });
+    }
+
+    /* KONTROL GESER & ZOOM FOTO SEMENTARA */
+    function movePhoto(direction) {
+      const step = 4; // piksel geser
+      const current = photoTransforms[activeSlotIndex];
+
+      if (direction === 'up') current.y -= step;
+      if (direction === 'down') current.y += step;
+      if (direction === 'left') current.x -= step;
+      if (direction === 'right') current.x += step;
+
+      const targetImg = document.getElementById(`keepsakeImg_${activeSlotIndex}`);
+      if (targetImg) applyTransformToImg(targetImg, current);
+    }
+
+    function zoomPhoto(amount) {
+      const current = photoTransforms[activeSlotIndex];
+      current.scale = Math.max(0.5, Math.min(3.0, current.scale + amount));
+
+      const targetImg = document.getElementById(`keepsakeImg_${activeSlotIndex}`);
+      if (targetImg) applyTransformToImg(targetImg, current);
+    }
+
+    function applyTransformToImg(imgElement, transformObj) {
+      imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
+    }
+
+    /* DOWNLOAD & NOTIFIKASI CUSTOM */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
+
+      // Hilangkan sementara outline pink terpilih agar tidak tersimpan di gambar download
+      document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
 
       html2canvas(frameWrapper, {
         useCORS: true,
@@ -948,9 +1115,24 @@
         link.download = 'keepsake-in-bloom.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+
+        // Kembalikan outline pink pada slot aktif
+        selectSlot(activeSlotIndex);
+
+        // Munculkan notifikasi custom lucu
+        showToast();
       }).catch((err) => {
+        selectSlot(activeSlotIndex);
         alert('Gagal mendownload gambar. Silakan coba lagi!');
       });
+    }
+
+    function showToast() {
+      document.getElementById('customToast').classList.remove('hidden');
+    }
+
+    function closeToast() {
+      document.getElementById('customToast').classList.add('hidden');
     }
   </script>
 
