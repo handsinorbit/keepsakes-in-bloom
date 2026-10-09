@@ -149,7 +149,7 @@
       text-shadow: 
         1px 1px 0px #ffffff,
        -1px -1px 0px #ffffff,
-        1px -1px 0px #ffffff,
+        1px 1px 0px #ffffff,
        -1px 1px 0px #ffffff,
         0px 2px 4px rgba(0, 0, 0, 0.25);
     }
@@ -315,10 +315,10 @@
       100% { content: ''; }
     }
 
-    /* Preview Polaroid */
+    /* Preview Polaroid Desktop */
     .preview-container {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
       width: 100%;
       margin-bottom: 20px;
@@ -332,6 +332,7 @@
       border-radius: 8px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       border: 1px solid #eee;
+      flex-shrink: 0;
     }
 
     .polaroid-img-wrapper {
@@ -485,8 +486,32 @@
 
       /* Container Halaman 2 di HP */
       .clean-container {
-        padding: 25px 18px !important;
+        padding: 25px 14px !important;
         border-radius: 22px !important;
+      }
+
+      /* PREVIEW FOTO HP: BISA DI-SCROLL KE SAMPING & UKURAN LEBIH BESAR */
+      .preview-container {
+        justify-content: flex-start !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        padding: 5px 10px 15px 10px !important;
+        gap: 12px !important;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .polaroid-card {
+        width: 75% !important; /* Ukuran gambar diperbesar jauh lebih jelas di HP */
+        flex-shrink: 0 !important;
+        scroll-snap-align: center;
+        padding: 8px 8px 24px 8px !important;
+        border-radius: 12px !important;
+      }
+
+      .polaroid-number {
+        font-size: 0.85rem !important;
+        bottom: 6px !important;
+        right: 12px !important;
       }
 
       /* Header Halaman 2 di HP */
