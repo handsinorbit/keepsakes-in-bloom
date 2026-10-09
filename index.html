@@ -462,7 +462,7 @@
       max-width: 280px;
       margin: 0 auto 15px auto;
       border-radius: 8px;
-      overflow: hidden;
+      overflow: visible; /* Biar outline pink di luar foto tidak terpotong */
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       background: #ffffff;
     }
@@ -496,17 +496,17 @@
       background: #222;
       cursor: pointer;
       box-sizing: border-box;
-      transition: outline 0.15s ease;
+      transition: outline 0.15s ease, outline-offset 0.15s ease;
     }
 
     .keepsake-slot-1 { top: 5.2%; }
     .keepsake-slot-2 { top: 31.8%; }
     .keepsake-slot-3 { top: 58.4%; }
 
-    /* TAG/OUTLINE PINK UNTUK FOTO TERPILIH */
+    /* OUTLINE PINK DILUAR FOTO (Luar Area Frame Foto) */
     .keepsake-slot.selected {
-      outline: 3.5px solid #EB5289 !important;
-      outline-offset: -3.5px;
+      outline: 3px solid #EB5289 !important;
+      outline-offset: 3px !important; /* Memberikan offset keluar dari foto */
       z-index: 20;
     }
 
@@ -886,7 +886,7 @@
       { x: 0, y: 0, scale: 1 },
       { x: 0, y: 0, scale: 1 }
     ];
-    let activeSlotIndex = 0; // Slot aktif default
+    let activeSlotIndex = 0;
 
     function startCapture() {
       resetAllData();
@@ -1073,9 +1073,9 @@
       });
     }
 
-    /* KONTROL GESER & ZOOM FOTO SEMENTARA */
+    /* KONTROL GESER & ZOOM FOTO */
     function movePhoto(direction) {
-      const step = 4; // piksel geser
+      const step = 4;
       const current = photoTransforms[activeSlotIndex];
 
       if (direction === 'up') current.y -= step;
@@ -1103,7 +1103,6 @@
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
-      // Hilangkan sementara outline pink terpilih agar tidak tersimpan di gambar download
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
 
       html2canvas(frameWrapper, {
@@ -1116,10 +1115,7 @@
         link.href = canvas.toDataURL('image/png');
         link.click();
 
-        // Kembalikan outline pink pada slot aktif
         selectSlot(activeSlotIndex);
-
-        // Munculkan notifikasi custom lucu
         showToast();
       }).catch((err) => {
         selectSlot(activeSlotIndex);
