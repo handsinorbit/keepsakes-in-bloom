@@ -164,7 +164,7 @@
       transform: translateY(1px);
     }
 
-    /* HALAMAN 2 (DESKTOP / PC) */
+    /* HALAMAN 2 & 3 CONTAINER */
     .clean-container {
       background-color: #f2f2e6;
       width: 92%;
@@ -215,7 +215,7 @@
       transform: translateY(1px);
     }
 
-    /* Header Halaman 2 Desktop */
+    /* Header Halaman 2 & 3 */
     .clean-container .header-step h2 {
       font-family: 'Knewave', system-ui, cursive !important;
       font-size: 3.2rem !important;
@@ -371,7 +371,7 @@
       margin-bottom: 12px;
     }
 
-    /* SLIDER CONTAINER & CONTROL (UKURAN DIPERBESAR) */
+    /* SLIDER CONTAINER & CONTROL */
     .preset-slider-container {
       display: flex;
       align-items: center;
@@ -410,7 +410,7 @@
       transform: scale(0.95);
     }
 
-    /* BADGE PRESET YANG TAMPIL UTAMA (UKURAN LEBIH BESAR & PROPORSI PAS) */
+    /* BADGE PRESET */
     .preset-badge-active {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover;
@@ -431,7 +431,7 @@
       user-select: none;
     }
 
-    /* TOMBOL RESET PRESET (MUNGIL) */
+    /* TOMBOL RESET PRESET */
     .btn-reset-preset {
       background: #ffffff;
       color: #7b5263;
@@ -465,6 +465,58 @@
     .filter-softglow   { filter: brightness(1.12) contrast(0.85) saturate(0.8); }
     .filter-vintage    { filter: brightness(0.95) contrast(1.05) sepia(0.25) saturate(0.85); }
     .filter-warmdaylight { filter: brightness(1.05) contrast(1.02) saturate(1.1) hue-rotate(-8deg); }
+
+    /* ========================================================
+       HALAMAN 3: PHOTOSTRIP KEEPSAKE FRAME CUSTOM
+       ======================================================== */
+    .keepsake-frame-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto 25px auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      background: #ffffff;
+    }
+
+    .keepsake-frame-bg {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .keepsake-photos-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 18% 10% 22% 10%; /* Area slot foto menyesuaikan frame */
+      box-sizing: border-box;
+    }
+
+    .keepsake-slot {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #eee;
+    }
+
+    .keepsake-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     #galleryInput {
       display: none;
@@ -512,13 +564,11 @@
         margin-top: 2px;
       }
 
-      /* Container Halaman 2 di HP */
       .clean-container {
         padding: 25px 14px !important;
         border-radius: 22px !important;
       }
 
-      /* PREVIEW FOTO HP: BISA DI-SCROLL KE SAMPING & UKURAN LEBIH BESAR */
       .preview-container {
         justify-content: flex-start !important;
         overflow-x: auto !important;
@@ -542,7 +592,6 @@
         right: 12px !important;
       }
 
-      /* Header Halaman 2 di HP */
       .clean-container .header-step h2 {
         font-size: 2rem !important;
         margin-bottom: 4px !important;
@@ -582,7 +631,6 @@
         margin: 8px 0 10px 0 !important;
       }
 
-      /* Ukuran Tombol Halaman 2 di HP */
       .clean-container .btn-journey,
       .clean-container .btn-white {
         width: 100% !important;
@@ -593,7 +641,6 @@
         margin-bottom: 8px !important;
       }
 
-      /* Slider di HP Proporsional */
       .preset-slider-container {
         gap: 10px;
         max-width: 280px;
@@ -616,12 +663,16 @@
         font-size: 0.8rem !important;
         margin-top: 8px !important;
       }
+
+      .keepsake-frame-wrapper {
+        max-width: 280px !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- HALAMAN 1 -->
+  <!-- HALAMAN 1: LANDING MEMO CARD -->
   <div id="step1" class="fade-in">
     <div class="memo-card">
       <div class="sub-subtitle">daem's Birthday Event</div>
@@ -631,11 +682,10 @@
     </div>
   </div>
 
-  <!-- HALAMAN 2 -->
+  <!-- HALAMAN 2: PHOTO SELECTION & FILTER -->
   <div id="step2" class="hidden" style="width: 100%;">
     <div class="clean-container">
       
-      <!-- Header Utama Halaman 2 -->
       <div class="header-step" style="text-align: center; margin-bottom: 15px;">
         <h2>Keepsakes in Bloom</h2>
         <p>Craft Your Memories</p>
@@ -655,7 +705,6 @@
         </div>
       </div>
 
-      <!-- Tampilan Preview Tambahan di Bawah -->
       <div id="previewHeaderView" class="hidden" style="width: 100%; text-align: center;">
         <div class="preview-header-title">Preview Your Keepsakes</div>
         <div class="preview-header-subtitle" id="photoCountLabel">All Moments Loaded (0/3)</div>
@@ -664,7 +713,7 @@
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
       <div id="previewContainer" class="preview-container hidden"></div>
 
-      <!-- Selection Present Theme (SLIDER VERSION) -->
+      <!-- Selection Present Theme -->
       <div id="moodSection" class="mood-section hidden">
         <h3 class="mood-title">Select Present Theme</h3>
         <div class="preset-slider-container">
@@ -679,9 +728,36 @@
 
       <!-- Action Buttons -->
       <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-        <button id="btnApply" class="btn-journey hidden" onclick="alert('Fitur Generate Keepsake sedang disiapkan karena frame belum tersedia 🌸')">📷 Generate Keepsake</button>
+        <button id="btnApply" class="btn-journey hidden" onclick="generateKeepsake()">📷 Generate Keepsake</button>
         <button id="btnBackToGallery" class="btn-white hidden" onclick="openGallery()">← Change Photos</button>
         <button id="btnBack" class="btn-white" onclick="resetAndBackToHome()">← Go Back To Home</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HALAMAN 3: EDITOR / FINAL KEEPSAKE FRAME -->
+  <div id="step3" class="hidden" style="width: 100%;">
+    <div class="clean-container">
+      
+      <div class="header-step" style="text-align: center; margin-bottom: 15px;">
+        <h2>Keepsakes in Bloom</h2>
+        <p>Your Bloom Keepsake is Ready!</p>
+      </div>
+
+      <!-- KANVAS PHOTOSTRIP CUSTOM FRAME -->
+      <div id="keepsakeCardToDownload" class="keepsake-frame-wrapper">
+        <img class="keepsake-frame-bg" src="https://lh3.googleusercontent.com/d/1tEsBoK6gwm1_qxy32lNf6c6a_4X7lQAJ" crossorigin="anonymous" alt="Frame Custom">
+        <div id="keepsakeSlotContainer" class="keepsake-photos-overlay">
+          <!-- Foto-foto pilihan akan disuntikkan ke sini secara otomatis -->
+        </div>
+      </div>
+
+      <!-- Action Buttons Halaman 3 -->
+      <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <button class="btn-journey" onclick="downloadKeepsake()">✨ Download Keepsake</button>
+        <button class="btn-white" onclick="goToStep(2)">← Edit / Change Theme</button>
+        <button class="btn-white" onclick="resetAndBackToHome()">🌸 Start Over</button>
       </div>
 
     </div>
@@ -698,6 +774,7 @@
 
     let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
+    let loadedImageUrls = [];
 
     function startCapture() {
       resetAllData();
@@ -722,6 +799,7 @@
       document.getElementById('btnApply').classList.add('hidden');
       document.getElementById('btnBackToGallery').classList.add('hidden');
 
+      loadedImageUrls = [];
       currentPresetIndex = 0;
       updatePresetUI();
     }
@@ -729,21 +807,27 @@
     function goToStep(stepNumber) {
       const step1 = document.getElementById('step1');
       const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
 
       step1.classList.add('hidden');
       step1.classList.remove('fade-in');
       step2.classList.add('hidden');
       step2.classList.remove('fade-in');
+      step3.classList.add('hidden');
+      step3.classList.remove('fade-in');
 
       if (stepNumber === 1) {
         step1.classList.remove('hidden');
         void step1.offsetWidth; 
         step1.classList.add('fade-in');
-      }
-      if (stepNumber === 2) {
+      } else if (stepNumber === 2) {
         step2.classList.remove('hidden');
         void step2.offsetWidth; 
         step2.classList.add('fade-in');
+      } else if (stepNumber === 3) {
+        step3.classList.remove('hidden');
+        void step3.offsetWidth; 
+        step3.classList.add('fade-in');
       }
     }
 
@@ -783,6 +867,7 @@
         });
 
         Promise.all(readPromises).then((results) => {
+          loadedImageUrls = results;
           results.forEach((dataUrl, index) => {
             const card = document.createElement('div');
             card.className = 'polaroid-card';
@@ -831,8 +916,47 @@
       presetDisplay.innerText = preset.name;
       selectedFilterClass = `filter-${preset.filter}`;
 
-      document.querySelectorAll('.polaroid-img-wrapper img').forEach(img => {
+      document.querySelectorAll('.polaroid-img-wrapper img, .keepsake-slot img').forEach(img => {
         img.className = selectedFilterClass;
+      });
+    }
+
+    /* HALAMAN 3 GENERATE & DOWNLOAD */
+    function generateKeepsake() {
+      if (loadedImageUrls.length === 0) return;
+
+      const slotContainer = document.getElementById('keepsakeSlotContainer');
+      slotContainer.innerHTML = '';
+
+      loadedImageUrls.forEach((url) => {
+        const slot = document.createElement('div');
+        slot.className = 'keepsake-slot';
+
+        const img = document.createElement('img');
+        img.src = url;
+        img.className = selectedFilterClass;
+
+        slot.appendChild(img);
+        slotContainer.appendChild(slot);
+      });
+
+      goToStep(3);
+    }
+
+    function downloadKeepsake() {
+      const frameWrapper = document.getElementById('keepsakeCardToDownload');
+
+      html2canvas(frameWrapper, {
+        useCORS: true,
+        scale: 3,
+        backgroundColor: null
+      }).then((canvas) => {
+        const link = document.createElement('a');
+        link.download = 'keepsake-in-bloom.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch((err) => {
+        alert('Gagal mendownload gambar. Pastikan koneksi internet stabil!');
       });
     }
   </script>
