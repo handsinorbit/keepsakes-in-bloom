@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -462,7 +462,7 @@
       max-width: 280px;
       margin: 0 auto 15px auto;
       border-radius: 8px;
-      overflow: visible; /* Biar outline pink di luar foto tidak terpotong */
+      overflow: visible;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       background: #ffffff;
     }
@@ -503,10 +503,10 @@
     .keepsake-slot-2 { top: 31.8%; }
     .keepsake-slot-3 { top: 58.4%; }
 
-    /* OUTLINE PINK DILUAR FOTO (Luar Area Frame Foto) */
+    /* OUTLINE PINK DILUAR FOTO */
     .keepsake-slot.selected {
       outline: 3px solid #EB5289 !important;
-      outline-offset: 3px !important; /* Memberikan offset keluar dari foto */
+      outline-offset: 3px !important;
       z-index: 20;
     }
 
@@ -520,52 +520,60 @@
       pointer-events: none;
     }
 
-    /* KONTROL NAVIGATOR (D-PAD & ZOOM) */
+    /* KONTROL NAVIGATOR (D-PAD & ZOOM CUTE PASTEL PINK) */
     .navigator-control-section {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 22px;
       margin-bottom: 20px;
-      background: #e2e2d5;
-      padding: 12px 20px;
-      border-radius: 20px;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.06);
+      background: #f7ebf0;
+      padding: 14px 22px;
+      border-radius: 22px;
+      border: 1px solid #ebd4db;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
     .dpad-container {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 102px;
+      height: 102px;
     }
 
     .dpad-btn {
       position: absolute;
-      background: #222225;
-      color: #ffffff;
-      border: none;
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
+      background: #ffd6e0;
+      color: #5c3545;
+      border: 1.5px solid #ebd4db;
+      width: 34px;
+      height: 34px;
+      font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.06);
       user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .dpad-btn:hover {
+      background: #fca1be;
+      color: #ffffff;
     }
 
     .dpad-btn:active {
       background: #EB5289;
+      color: #ffffff;
       transform: scale(0.93);
     }
 
-    .dpad-up    { top: 0; left: 34px; border-radius: 6px 6px 0 0; }
-    .dpad-down  { bottom: 0; left: 34px; border-radius: 0 0 6px 6px; }
-    .dpad-left  { top: 34px; left: 0; border-radius: 6px 0 0 6px; }
-    .dpad-right { top: 34px; right: 0; border-radius: 0 6px 6px 0; }
-    .dpad-center { top: 34px; left: 34px; background: #2b2b2e; pointer-events: none; box-shadow: none; }
+    .dpad-up    { top: 0; left: 34px; border-radius: 10px 10px 0 0; }
+    .dpad-down  { bottom: 0; left: 34px; border-radius: 0 0 10px 10px; }
+    .dpad-left  { top: 34px; left: 0; border-radius: 10px 0 0 10px; }
+    .dpad-right { top: 34px; right: 0; border-radius: 0 10px 10px 0; }
+    .dpad-center { top: 34px; left: 34px; background: #f2cdd7; border-color: #ebd4db; pointer-events: none; box-shadow: none; }
 
     .zoom-controls {
       display: flex;
@@ -576,19 +584,19 @@
     .btn-zoom {
       background: #ffffff;
       color: #5c3545;
-      border: 1px solid #ebd4db;
+      border: 1.5px solid #ebd4db;
       padding: 6px 14px;
-      border-radius: 15px;
+      border-radius: 16px;
       font-family: 'Delicious Handrawn', cursive;
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       transition: all 0.2s ease;
     }
 
     .btn-zoom:hover {
-      background: #f7ebf0;
+      background: #ffd6e0;
     }
 
     .btn-zoom:active {
@@ -857,13 +865,13 @@
     </div>
   </div>
 
-  <!-- POPUP NOTIFIKASI SAVED LUCU -->
+  <!-- POPUP NOTIFIKASI SAVED LUCU (ENGLISH VERSION) -->
   <div id="customToast" class="custom-toast-overlay hidden">
     <div class="custom-toast-box">
       <div class="toast-icon">🌸✨</div>
       <div class="toast-title">Keepsake Saved!</div>
-      <div class="toast-message">Hasil photostrip-mu sudah berhasil diunduh. Simpan momen manismu ini ya! 💖</div>
-      <button class="btn-journey" style="height: 40px; font-size: 1.1rem; max-width: 160px;" onclick="closeToast()">Yey, Makasih! 🎀</button>
+      <div class="toast-message">Your photostrip has been successfully downloaded. Cherish this sweet moment! 💖</div>
+      <button class="btn-journey" style="height: 40px; font-size: 1.1rem; max-width: 160px;" onclick="closeToast()">Yay, Thank You! 🎀</button>
     </div>
   </div>
 
