@@ -486,12 +486,12 @@
       box-sizing: border-box;
     }
 
+    /* KEMBALI KE RASIO PERSENTASE PRESISI TINGGI FRAME (80.4% x 22.8%) */
     .keepsake-slot {
       position: absolute;
       left: 9.8%;
       width: 80.4%;
-      height: 0;
-      padding-top: 60.3%;
+      height: 22.8%;
       overflow: hidden;
       border-radius: 2px;
       background: #222;
@@ -512,9 +512,6 @@
     }
 
     .keepsake-slot img {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -1113,15 +1110,21 @@
       imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
     }
 
-    /* DOWNLOAD UNIVERSAL (STABIL DI IOS, ANDROID & PC WEB DENGAN BLOB) */
+    /* DOWNLOAD UNIVERSAL DENGAN PEMBERSIHAN RENDER DUKUNGAN IOS/ANDROID/PC */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
+      // Sembunyikan garis seleksi pink
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
+
+      // Trik Pengunci Dimensi Presisi Sebelum Render html2canvas
+      const rect = frameWrapper.getBoundingClientRect();
 
       html2canvas(frameWrapper, {
         useCORS: true,
         scale: 3,
+        width: rect.width,
+        height: rect.height,
         backgroundColor: null
       }).then((canvas) => {
         canvas.toBlob((blob) => {
@@ -1143,7 +1146,7 @@
           setTimeout(() => {
             document.body.removeChild(link);
             URL.revokeObjectURL(blobUrl);
-          }, 200);
+          }, 300);
 
           selectSlot(activeSlotIndex);
           showToast();
