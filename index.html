@@ -1113,44 +1113,98 @@
       imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
     }
 
-    /* DOWNLOAD UNIVERSAL (STABIL DI IOS, ANDROID & PC WEB DENGAN BLOB) */
+    /* FIX DOWNLOAD PRESISI ANTI-GEPENG (DENGAN RE-RENDER CANVAS PENYESUAI KETINGGIAN) */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
+      // Hapus outline seleksi pink
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
 
-      html2canvas(frameWrapper, {
-        useCORS: true,
-        scale: 3,
-        backgroundColor: null
-      }).then((canvas) => {
-        canvas.toBlob((blob) => {
-          if (!blob) {
+      const slotImages = frameWrapper.querySelectorAll('.keepsake-slot img');
+      const tempCanvases = [];
+
+      // Konversi object-fit: cover ke Kanvas Sementara agar html2canvas tidak bikin foto gepeng
+      const convertPromises = Array.from(slotImages).map((img) => {
+        return new Promise((resolve) => {
+          const rect = img.getBoundingClientRect();
+          const canvas = document.createElement('canvas');
+          canvas.width = rect.width * 2;
+          canvas.height = rect.height * 2;
+          const ctx = canvas.getContext('2d');
+
+          const image = new Image();
+          image.crossOrigin = 'anonymous';
+          image.onload = () => {
+            const hRatio = canvas.width / image.width;
+            const vRatio = canvas.height / image.height;
+            const ratio = Math.max(hRatio, vRatio);
+            const centerShift_x = (canvas.width - image.width * ratio) / 2;
+            const centerShift_y = (canvas.height - image.height * ratio) / 2;
+
+            ctx.drawImage(
+              image, 
+              0, 0, image.width, image.height,
+              centerShift_x, centerShift_y, image.width * ratio, image.height * ratio
+            );
+
+            img.style.objectFit = 'fill';
+            img.dataset.origSrc = img.src;
+            img.src = canvas.toDataURL();
+            tempCanvases.push(img);
+            resolve();
+          };
+          image.src = img.src;
+        });
+      });
+
+      Promise.all(convertPromises).then(() => {
+        html2canvas(frameWrapper, {
+          useCORS: true,
+          scale: 3,
+          backgroundColor: null
+        }).then((canvas) => {
+          // Kembalikan gambar ke object-fit awal
+          tempCanvases.forEach(img => {
+            img.style.objectFit = 'cover';
+            if (img.dataset.origSrc) {
+              img.src = img.dataset.origSrc;
+            }
+          });
+
+          canvas.toBlob((blob) => {
+            if (!blob) {
+              selectSlot(activeSlotIndex);
+              alert('Gagal mendownload gambar. Silakan coba lagi!');
+              return;
+            }
+
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            link.href = blobUrl;
+            link.download = 'keepsake-in-bloom.png';
+
+            document.body.appendChild(link);
+            link.click();
+
+            setTimeout(() => {
+              document.body.removeChild(link);
+              URL.revokeObjectURL(blobUrl);
+            }, 200);
+
             selectSlot(activeSlotIndex);
-            alert('Gagal mendownload gambar. Silakan coba lagi!');
-            return;
-          }
-
-          const blobUrl = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.style.display = 'none';
-          link.href = blobUrl;
-          link.download = 'keepsake-in-bloom.png';
-
-          document.body.appendChild(link);
-          link.click();
-
-          setTimeout(() => {
-            document.body.removeChild(link);
-            URL.revokeObjectURL(blobUrl);
-          }, 200);
-
+            showToast();
+          }, 'image/png');
+        }).catch((err) => {
+          tempCanvases.forEach(img => {
+            img.style.objectFit = 'cover';
+            if (img.dataset.origSrc) {
+              img.src = img.dataset.origSrc;
+            }
+          });
           selectSlot(activeSlotIndex);
-          showToast();
-        }, 'image/png');
-      }).catch((err) => {
-        selectSlot(activeSlotIndex);
-        alert('Gagal mendownload gambar. Silakan coba lagi!');
+          alert('Gagal mendownload gambar. Silakan coba lagi!');
+        });
       });
     }
 
