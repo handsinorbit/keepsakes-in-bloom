@@ -871,12 +871,12 @@
     </div>
   </div>
 
-  <!-- POPUP NOTIFIKASI SAVED LUCU (ENGLISH VERSION) -->
+  <!-- POPUP NOTIFIKASI SAVED LUCU -->
   <div id="customToast" class="custom-toast-overlay hidden">
     <div class="custom-toast-box">
       <div class="toast-icon">🌸✨</div>
       <div class="toast-title">Keepsake Saved!</div>
-      <div class="toast-message" id="toastMessageText">Your photostrip has been successfully downloaded. Cherish this sweet moment! 💖</div>
+      <div class="toast-message">Your photostrip has been successfully downloaded. Cherish this sweet moment! 💖</div>
       <button class="btn-journey" style="height: 40px; font-size: 1.1rem; max-width: 160px;" onclick="closeToast()">Yay, Thank You! 🎀</button>
     </div>
   </div>
@@ -1113,59 +1113,41 @@
       imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
     }
 
-    /* DOWNLOAD & NOTIFIKASI CUSTOM (SOLUSI KHUSUS SAFARI iOS) */
+    /* DOWNLOAD UNIVERSAL (STABIL DI IOS, ANDROID & PC WEB DENGAN BLOB) */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
-
-      // Deteksi browser iOS / Safari
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
       html2canvas(frameWrapper, {
         useCORS: true,
         scale: 3,
         backgroundColor: null
       }).then((canvas) => {
-        const imageDataUrl = canvas.toDataURL('image/png');
-
-        if (isIOS) {
-          // Solusi iOS Safari: Buka gambar langsung di jendela/tab baru untuk di-"Add to Photos"
-          const newWindow = window.open('');
-          if (newWindow) {
-            newWindow.document.write(`
-              <html>
-                <head>
-                  <title>Save Your Keepsake</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <style>
-                    body { margin:0; background:#222; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; color:#fff; font-family:sans-serif; text-align:center; padding:20px; box-sizing:border-box; }
-                    img { max-width:100%; max-height:75vh; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); margin-bottom:15px; }
-                    p { font-size:1.1rem; color:#ffd6e0; font-weight:bold; }
-                  </style>
-                </head>
-                <body>
-                  <img src="${imageDataUrl}" alt="Photostrip Keepsake" />
-                  <p>Tap and hold the image, then choose "Save to Photos" 💖</p>
-                </body>
-              </html>
-            `);
-          } else {
-            // Jika popup blocked di iOS
-            window.location.href = imageDataUrl;
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            selectSlot(activeSlotIndex);
+            alert('Gagal mendownload gambar. Silakan coba lagi!');
+            return;
           }
-          document.getElementById('toastMessageText').innerText = 'Please tap and hold the opened image to "Save to Photos"! 💖';
-        } else {
-          // Download standar untuk Android/Desktop
-          const link = document.createElement('a');
-          link.download = 'keepsake-in-bloom.png';
-          link.href = imageDataUrl;
-          link.click();
-          document.getElementById('toastMessageText').innerText = 'Your photostrip has been successfully downloaded. Cherish this sweet moment! 💖';
-        }
 
-        selectSlot(activeSlotIndex);
-        showToast();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.style.display = 'none';
+          link.href = blobUrl;
+          link.download = 'keepsake-in-bloom.png';
+
+          document.body.appendChild(link);
+          link.click();
+
+          setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+          }, 200);
+
+          selectSlot(activeSlotIndex);
+          showToast();
+        }, 'image/png');
       }).catch((err) => {
         selectSlot(activeSlotIndex);
         alert('Gagal mendownload gambar. Silakan coba lagi!');
