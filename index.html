@@ -90,7 +90,6 @@
       margin: 0 auto;
       position: relative;
       z-index: 2;
-      /* Menerapkan Animasi Goyang Halus */
       animation: floatMemo 4s ease-in-out infinite;
     }
 
@@ -360,9 +359,10 @@
       z-index: 5;
     }
 
+    /* SECTION MOOD / PRESET SLIDER */
     .mood-section {
       width: 100%;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
 
     .mood-title {
@@ -370,34 +370,64 @@
       margin-bottom: 12px;
     }
 
-    .filter-options {
+    /* SLIDER CONTAINER & CONTROL */
+    .preset-slider-container {
       display: flex;
-      gap: 8px;
+      align-items: center;
       justify-content: center;
-      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
     }
 
-    .filter-btn {
+    .slider-arrow {
       background: #ffffff;
-      border: 1px solid #ebd4db;
-      padding: 8px 18px;
-      border-radius: 25px;
-      font-size: 1.1rem;
       color: #5c3545;
+      border: 1px solid #ebd4db;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      font-weight: bold;
       cursor: pointer;
-      font-family: 'Delicious Handrawn', cursive;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+      user-select: none;
+      flex-shrink: 0;
     }
 
-    .filter-btn.active {
+    .slider-arrow:hover {
+      background: #f7ebf0;
+      transform: scale(1.05);
+    }
+
+    .slider-arrow:active {
+      transform: scale(0.95);
+    }
+
+    /* BADGE PRESET YANG TAMPIL UTAMA */
+    .preset-badge-active {
       background: url('https://lh3.googleusercontent.com/d/1nHFuHNtICn3Op9sF4EdAotYTGP07N_Uh') repeat center center;
       background-size: cover;
       color: #5c3545;
-      border-color: transparent;
+      width: 220px;
+      height: 48px;
+      border-radius: 25px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      cursor: default;
+      user-select: none;
     }
 
     /* Definisi Filter CSS */
@@ -510,9 +540,22 @@
         margin-bottom: 8px !important;
       }
 
-      .filter-btn {
-        padding: 5px 12px !important;
-        font-size: 0.88rem !important;
+      /* Slider di HP */
+      .preset-slider-container {
+        gap: 8px;
+        max-width: 280px;
+      }
+
+      .slider-arrow {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+      }
+
+      .preset-badge-active {
+        width: 160px;
+        height: 38px;
+        font-size: 1.05rem;
       }
     }
   </style>
@@ -562,15 +605,13 @@
       <input type="file" id="galleryInput" accept="image/*" multiple onchange="handleImageSelect(event)">
       <div id="previewContainer" class="preview-container hidden"></div>
 
-      <!-- Selection Present Theme -->
+      <!-- Selection Present Theme (SLIDER VERSION) -->
       <div id="moodSection" class="mood-section hidden">
         <h3 class="mood-title">Select Present Theme</h3>
-        <div class="filter-options">
-          <button class="filter-btn active" onclick="applyFilter('classic', this)">Classic</button>
-          <button class="filter-btn" onclick="applyFilter('bloom', this)">Bloom</button>
-          <button class="filter-btn" onclick="applyFilter('softglow', this)">Soft Glow</button>
-          <button class="filter-btn" onclick="applyFilter('vintage', this)">Vintage</button>
-          <button class="filter-btn" onclick="applyFilter('warmdaylight', this)">Warm Daylight</button>
+        <div class="preset-slider-container">
+          <button class="slider-arrow" onclick="navigatePreset(-1)">←</button>
+          <div id="presetDisplay" class="preset-badge-active">Classic</div>
+          <button class="slider-arrow" onclick="navigatePreset(1)">→</button>
         </div>
       </div>
 
@@ -585,6 +626,15 @@
   </div>
 
   <script>
+    const presetsList = [
+      { name: 'Classic', filter: 'classic' },
+      { name: 'Bloom', filter: 'bloom' },
+      { name: 'Soft Glow', filter: 'softglow' },
+      { name: 'Vintage', filter: 'vintage' },
+      { name: 'Warm Daylight', filter: 'warmdaylight' }
+    ];
+
+    let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
 
     function startCapture() {
@@ -610,10 +660,8 @@
       document.getElementById('btnApply').classList.add('hidden');
       document.getElementById('btnBackToGallery').classList.add('hidden');
 
-      selectedFilterClass = 'filter-classic';
-      document.querySelectorAll('.filter-btn').forEach((btn, idx) => {
-        btn.classList.toggle('active', idx === 0);
-      });
+      currentPresetIndex = 0;
+      updatePresetUI();
     }
 
     function goToStep(stepNumber) {
@@ -627,13 +675,11 @@
 
       if (stepNumber === 1) {
         step1.classList.remove('hidden');
-        // re-trigger animation fade
         void step1.offsetWidth; 
         step1.classList.add('fade-in');
       }
       if (stepNumber === 2) {
         step2.classList.remove('hidden');
-        // re-trigger animation fade
         void step2.offsetWidth; 
         step2.classList.add('fade-in');
       }
@@ -699,11 +745,23 @@
       }
     }
 
-    function applyFilter(filterName, btnElement) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
+    /* NAVIGASI SLIDER PRESET */
+    function navigatePreset(direction) {
+      currentPresetIndex += direction;
+      if (currentPresetIndex < 0) {
+        currentPresetIndex = presetsList.length - 1;
+      } else if (currentPresetIndex >= presetsList.length) {
+        currentPresetIndex = 0;
+      }
+      updatePresetUI();
+    }
 
-      selectedFilterClass = `filter-${filterName}`;
+    function updatePresetUI() {
+      const preset = presetsList[currentPresetIndex];
+      const presetDisplay = document.getElementById('presetDisplay');
+      
+      presetDisplay.innerText = preset.name;
+      selectedFilterClass = `filter-${preset.filter}`;
 
       document.querySelectorAll('.polaroid-img-wrapper img').forEach(img => {
         img.className = selectedFilterClass;
