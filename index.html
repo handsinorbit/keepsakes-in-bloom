@@ -486,21 +486,19 @@
       box-sizing: border-box;
     }
 
-    /* SLOT FOTO RASIO KETAT 4:3 DENGAN FLEX ALIGNMENT */
+    /* FIX SAFARI iOS: TRADITIONAL ASPECT-RATIO HACK (PADDING-TOP 60.3% DENGAN LEBAR 80.4%) */
     .keepsake-slot {
       position: absolute;
       left: 9.8%;
       width: 80.4%;
-      aspect-ratio: 4 / 3;
+      height: 0;
+      padding-top: 60.3%; /* Tepat rasio 4:3 (80.4% * 3 / 4) */
       overflow: hidden;
       border-radius: 2px;
       background: #222;
       cursor: pointer;
       box-sizing: border-box;
       transition: outline 0.15s ease, outline-offset 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .keepsake-slot-1 { top: 5.2%; }
@@ -514,14 +512,20 @@
       z-index: 20;
     }
 
-    /* PENGATURAN GAMBAR PROPORSIONAL MURNI (ANTI GEPENG) */
+    /* PENGATURAN GAMBAR UNTUK PADDING-TOP CONTAINER (COMPATIBLE SAFARI iOS) */
     .keepsake-slot img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      flex-shrink: 0;
       transform-origin: center center;
       transition: transform 0.05s linear;
       user-select: none;
       pointer-events: none;
+      -webkit-user-select: none;
     }
 
     /* KONTROL NAVIGATOR (D-PAD & ZOOM CUTE PASTEL PINK) */
@@ -1049,7 +1053,7 @@
       });
     }
 
-    /* HALAMAN 3 GENERATE & SELECT SLOT DENGAN CROP MANUAL PRESI PERMUKAAN */
+    /* HALAMAN 3 GENERATE & SELECT SLOT (STABIL SAFARI iOS & ANDROID) */
     function generateKeepsake() {
       if (loadedImageUrls.length === 0) return;
 
@@ -1063,27 +1067,9 @@
 
         const img = document.createElement('img');
         img.id = `keepsakeImg_${index}`;
+        img.src = url;
         img.className = selectedFilterClass;
-        
-        // Memastikan ukuran gambar pas menutupi rasio 4:3 tanpa ditarik/gepeng
-        const tempImage = new Image();
-        tempImage.src = url;
-        tempImage.onload = function() {
-          const imgAspect = tempImage.naturalWidth / tempImage.naturalHeight;
-          const targetAspect = 4 / 3;
-
-          if (imgAspect > targetAspect) {
-            // Gambar terlalu lebar
-            img.style.height = '100%';
-            img.style.width = 'auto';
-          } else {
-            // Gambar terlalu tinggi / portrait
-            img.style.width = '100%';
-            img.style.height = 'auto';
-          }
-          img.src = url;
-          applyTransformToImg(img, photoTransforms[index]);
-        };
+        applyTransformToImg(img, photoTransforms[index]);
 
         slot.appendChild(img);
         slotContainer.appendChild(slot);
@@ -1129,18 +1115,16 @@
       imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
     }
 
-    /* DOWNLOAD & NOTIFIKASI CUSTOM (SOLUSI DOWNLOAD ANTI GEPENG DI HP) */
+    /* DOWNLOAD & NOTIFIKASI CUSTOM (SOLUSI SAFARI iOS COMPATIBLE) */
     function downloadKeepsake() {
       const frameWrapper = document.getElementById('keepsakeCardToDownload');
 
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
 
-      // html2canvas merender ukuran utuh 3x lipat presisi tingginya
       html2canvas(frameWrapper, {
         useCORS: true,
         scale: 3,
-        backgroundColor: null,
-        windowWidth: document.documentElement.offsetWidth
+        backgroundColor: null
       }).then((canvas) => {
         const link = document.createElement('a');
         link.download = 'keepsake-in-bloom.png';
