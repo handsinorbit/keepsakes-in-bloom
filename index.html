@@ -508,8 +508,7 @@
       overflow: hidden;
       border-radius: 2px;
       background: #222;
-      cursor: grab;
-      touch-action: none;
+      cursor: pointer;
       box-sizing: border-box;
       transition: outline 0.15s ease, outline-offset 0.15s ease;
     }
@@ -1299,37 +1298,10 @@
       });
     }
 
-    /* GESER FOTO DENGAN DRAG (MOUSE & SENTUHAN) */
-    let dragState = null;
-
+    /* PILIH SLOT FOTO (geser & zoom hanya lewat tombol D-pad dan Zoom) */
     function startDragPhoto(e, index) {
       selectSlot(index);
-      const t = photoTransforms[index];
-      dragState = { index, startX: e.clientX, startY: e.clientY, origX: t.x, origY: t.y };
-      const img = document.getElementById(`keepsakeImg_${index}`);
-      if (img) img.style.transition = 'none';
-      e.currentTarget.style.cursor = 'grabbing';
-      e.preventDefault();
     }
-
-    window.addEventListener('pointermove', (e) => {
-      if (!dragState) return;
-      const t = photoTransforms[dragState.index];
-      t.x = dragState.origX + (e.clientX - dragState.startX);
-      t.y = dragState.origY + (e.clientY - dragState.startY);
-      const img = document.getElementById(`keepsakeImg_${dragState.index}`);
-      if (img) applyTransformToImg(img, t);
-    });
-
-    function endDragPhoto() {
-      if (!dragState) return;
-      const img = document.getElementById(`keepsakeImg_${dragState.index}`);
-      if (img) img.style.transition = '';
-      document.querySelectorAll('.keepsake-slot').forEach(s => s.style.cursor = '');
-      dragState = null;
-    }
-    window.addEventListener('pointerup', endDragPhoto);
-    window.addEventListener('pointercancel', endDragPhoto);
 
     /* KONTROL GESER & ZOOM FOTO */
     function movePhoto(direction) {
