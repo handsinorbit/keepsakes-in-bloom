@@ -481,6 +481,17 @@
       pointer-events: none;
     }
 
+    .keepsake-frame-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 25;
+      pointer-events: none;
+      display: block;
+    }
+
     .keepsake-photos-overlay {
       position: absolute;
       top: 0;
@@ -493,42 +504,84 @@
 
     .keepsake-slot {
       position: absolute;
-      left: 9.8%;
-      width: 80.4%;
       height: 0;
-      padding-top: 60.3%;
       overflow: hidden;
       border-radius: 2px;
       background: #222;
-      cursor: pointer;
+      cursor: grab;
+      touch-action: none;
       box-sizing: border-box;
       transition: outline 0.15s ease, outline-offset 0.15s ease;
     }
 
-    .keepsake-slot-1 { top: 5.2%; }
-    .keepsake-slot-2 { top: 31.8%; }
-    .keepsake-slot-3 { top: 58.4%; }
+    .keepsake-slot-1 { top: var(--s1-top, 11.84%); left: var(--s1-left, 21.96%); width: var(--s1-width, 62.52%); padding-top: var(--s1-h, 47.29%); border-radius: var(--s1-radius, 5% / 6.5%); }
+    .keepsake-slot-2 { top: var(--s2-top, 38.11%); left: var(--s2-left, 20.98%); width: var(--s2-width, 65.45%); padding-top: var(--s2-h, 65.45%); border-radius: var(--s2-radius, 50%); }
+    .keepsake-slot-3 { top: var(--s3-top, 69.62%); left: var(--s3-left, 20.4%); width: var(--s3-width, 66.82%); padding-top: var(--s3-h, 49.05%); border-radius: var(--s3-radius, 5% / 6.5%); }
 
     /* OUTLINE PINK DILUAR FOTO */
     .keepsake-slot.selected {
       outline: 3px solid #EB5289 !important;
-      outline-offset: 3px !important;
+      outline-offset: -5px !important;
       z-index: 20;
     }
 
     .keepsake-slot img {
       position: absolute;
-      top: 0;
+      top: 50%;
       left: 0;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       display: block;
       transform-origin: center center;
       transition: transform 0.05s linear;
       user-select: none;
       pointer-events: none;
       -webkit-user-select: none;
+    }
+
+    /* PILIHAN FRAME */
+    .frame-choice-section {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .frame-choice-title {
+      font-family: 'Mansalva', cursive;
+      font-size: 1.2rem;
+      color: #2b1e23;
+      margin-bottom: 8px;
+    }
+
+    .frame-choice-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .frame-btn {
+      background: #ffffff;
+      color: #5c3545;
+      border: 1.5px solid #ebd4db;
+      min-width: 120px;
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 22px;
+      font-family: 'Delicious Handrawn', cursive;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+
+    .frame-btn:hover {
+      background: #f7ebf0;
+    }
+
+    .frame-btn.active {
+      background: #EB5289;
+      color: #ffffff;
+      border-color: #EB5289;
     }
 
     /* KONTROL NAVIGATOR (D-PAD & ZOOM CUTE PASTEL PINK) */
@@ -768,6 +821,9 @@
       .dpad-center { top: 28px; left: 28px; }
 
       .btn-zoom { padding: 4px 10px; font-size: 0.88rem; }
+
+      .frame-choice-title { font-size: 1rem; }
+      .frame-btn { min-width: 100px; height: 36px; font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -846,12 +902,20 @@
         <p>Click photo to adjust position & zoom ✨</p>
       </div>
 
+      <!-- PILIHAN FRAME -->
+      <div class="frame-choice-section">
+        <div class="frame-choice-title">Choose Your Frame</div>
+        <div id="frameChoiceButtons" class="frame-choice-buttons"></div>
+      </div>
+
       <!-- KANVAS FRAME KEEPSAKE PRESISI -->
       <div id="keepsakeCardToDownload" class="keepsake-frame-wrapper">
-        <img class="keepsake-frame-bg" src="https://lh3.googleusercontent.com/d/1tEsBoK6gwm1_qxy32lNf6c6a_4X7lQAJ" crossorigin="anonymous" alt="Frame Custom">
+        <img id="keepsakeFrameImg" class="keepsake-frame-bg" crossorigin="anonymous" alt="Frame Custom">
         <div id="keepsakeSlotContainer" class="keepsake-photos-overlay">
           <!-- 3 Slot Foto Disuntikkan Secara Otomatis -->
         </div>
+        <!-- Frame lapisan atas (lubang transparan) agar hiasan frame tidak tertutup foto -->
+        <img id="keepsakeFrameTop" class="keepsake-frame-top" alt="">
       </div>
 
       <!-- D-PAD & ZOOM NAVIGATOR CONTROL -->
@@ -899,6 +963,34 @@
       { name: 'Warm Daylight', filter: 'warmdaylight' }
     ];
 
+    /* ========================================================
+       DAFTAR FRAME (2 PILIHAN)
+       Ganti FILE_ID dengan ID file frame dari Google Drive
+       (link: drive.google.com/file/d/FILE_ID/view).
+       'slots': posisi tiap lubang foto (% terhadap frame).
+       ======================================================== */
+    const framesList = [
+      {
+        name: 'Frame 1',
+        src: 'https://lh3.googleusercontent.com/d/1BcnPMfv6Z2XK-Mc5TfoCmE4yjpnATGz1',
+        slots: [
+          { top: '11.84%', left: '21.96%', width: '62.52%', h: '47.29%', radius: '5% / 6.5%' },
+          { top: '38.11%', left: '20.98%', width: '65.45%', h: '65.45%', radius: '50%' },
+          { top: '69.62%', left: '20.4%',  width: '66.82%', h: '49.05%', radius: '5% / 6.5%' }
+        ]
+      },
+      {
+        name: 'Frame 2',
+        src: 'https://lh3.googleusercontent.com/d/19vs9Q8LylLoVNtcZIoCHD-DRgPBbJs0N',
+        slots: [
+          { top: '11.85%', left: '22%',    width: '62.45%', h: '47.38%', radius: '5% / 6.5%' },
+          { top: '38.14%', left: '21.03%', width: '65.38%', h: '65.38%', radius: '50%' },
+          { top: '69.59%', left: '20.44%', width: '66.95%', h: '49.14%', radius: '5% / 6.5%' }
+        ]
+      }
+    ];
+    let currentFrameIndex = 0;
+
     let currentPresetIndex = 0;
     let selectedFilterClass = 'filter-classic';
     let loadedImageUrls = [];
@@ -936,6 +1028,7 @@
 
       loadedImageUrls = [];
       currentPresetIndex = 0;
+      currentFrameIndex = 0;
       photoTransforms = [
         { x: 0, y: 0, scale: 1 },
         { x: 0, y: 0, scale: 1 },
@@ -943,6 +1036,7 @@
       ];
       activeSlotIndex = 0;
       updatePresetUI();
+      applyFrame();
     }
 
     function goToStep(stepNumber) {
@@ -1060,6 +1154,127 @@
       });
     }
 
+    /* PILIHAN FRAME */
+    function buildFrameButtons() {
+      const box = document.getElementById('frameChoiceButtons');
+      box.innerHTML = '';
+      framesList.forEach((frame, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'frame-btn';
+        btn.innerText = frame.name;
+        btn.onclick = () => selectFrame(i);
+        box.appendChild(btn);
+      });
+    }
+
+    /* Lapisan frame di atas foto: lubang foto dibuat transparan,
+       sehingga hiasan di tepi lubang (karakter, apel, dll) tetap tampil di depan foto */
+    const frameOverlayCache = {};
+
+    function buildFrameOverlay(index) {
+      const frame = framesList[index];
+      const frameImg = document.getElementById('keepsakeFrameImg');
+      const topImg = document.getElementById('keepsakeFrameTop');
+
+      if (frameOverlayCache[index]) {
+        topImg.src = frameOverlayCache[index];
+        return;
+      }
+      if (!frameImg.naturalWidth) return;
+
+      try {
+        const MAX_W = 2000;
+        const k = Math.min(1, MAX_W / frameImg.naturalWidth);
+        const W = Math.round(frameImg.naturalWidth * k);
+        const H = Math.round(frameImg.naturalHeight * k);
+
+        const c = document.createElement('canvas');
+        c.width = W;
+        c.height = H;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(frameImg, 0, 0, W, H);
+        const imgData = ctx.getImageData(0, 0, W, H);
+        const px = imgData.data;
+
+        const isHole = (p) => {
+          const i = p * 4;
+          if (px[i + 3] < 128) return true;
+          const r = px[i], g = px[i + 1], b = px[i + 2];
+          return Math.abs(r - 224) <= 20 && Math.abs(g - 224) <= 20 && Math.abs(b - 224) <= 20 &&
+                 (Math.max(r, g, b) - Math.min(r, g, b)) <= 12;
+        };
+
+        const visited = new Uint8Array(W * H);
+        frame.slots.forEach((sl) => {
+          const cx = Math.round((parseFloat(sl.left) + parseFloat(sl.width) / 2) / 100 * W);
+          const cy = Math.round(parseFloat(sl.top) / 100 * H + parseFloat(sl.h) / 200 * W);
+          if (cx < 0 || cy < 0 || cx >= W || cy >= H) return;
+          const start = cy * W + cx;
+          if (visited[start] || !isHole(start)) return;
+
+          const stack = [start];
+          visited[start] = 1;
+          while (stack.length) {
+            const cur = stack.pop();
+            const x = cur % W;
+            const y = (cur - x) / W;
+            if (x > 0 && !visited[cur - 1] && isHole(cur - 1)) { visited[cur - 1] = 1; stack.push(cur - 1); }
+            if (x < W - 1 && !visited[cur + 1] && isHole(cur + 1)) { visited[cur + 1] = 1; stack.push(cur + 1); }
+            if (y > 0 && !visited[cur - W] && isHole(cur - W)) { visited[cur - W] = 1; stack.push(cur - W); }
+            if (y < H - 1 && !visited[cur + W] && isHole(cur + W)) { visited[cur + W] = 1; stack.push(cur + W); }
+          }
+        });
+
+        for (let p = 0; p < W * H; p++) {
+          if (visited[p]) px[p * 4 + 3] = 0;
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        frameOverlayCache[index] = c.toDataURL('image/png');
+        topImg.src = frameOverlayCache[index];
+      } catch (err) {
+        // Jika frame tidak bisa diproses, tampilan kembali seperti biasa (tanpa lapisan atas)
+        topImg.removeAttribute('src');
+      }
+    }
+
+    function selectFrame(index) {
+      currentFrameIndex = index;
+      applyFrame();
+    }
+
+    function applyFrame() {
+      const frame = framesList[currentFrameIndex];
+      const wrapper = document.getElementById('keepsakeCardToDownload');
+      const frameImg = document.getElementById('keepsakeFrameImg');
+
+      const topImg = document.getElementById('keepsakeFrameTop');
+      if (frameImg.getAttribute('src') !== frame.src) {
+        topImg.removeAttribute('src');
+        frameImg.src = frame.src;
+      } else if (frameImg.complete && frameImg.naturalWidth) {
+        buildFrameOverlay(currentFrameIndex);
+      }
+
+      frame.slots.forEach((sl, i) => {
+        const n = i + 1;
+        wrapper.style.setProperty(`--s${n}-top`, sl.top);
+        wrapper.style.setProperty(`--s${n}-left`, sl.left);
+        wrapper.style.setProperty(`--s${n}-width`, sl.width);
+        wrapper.style.setProperty(`--s${n}-h`, sl.h);
+        wrapper.style.setProperty(`--s${n}-radius`, sl.radius);
+      });
+
+      document.querySelectorAll('.frame-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === currentFrameIndex);
+      });
+    }
+
+    document.getElementById('keepsakeFrameImg').addEventListener('load', () => buildFrameOverlay(currentFrameIndex));
+    buildFrameButtons();
+    applyFrame();
+
     /* HALAMAN 3 GENERATE & SELECT SLOT */
     function generateKeepsake() {
       if (loadedImageUrls.length === 0) return;
@@ -1070,7 +1285,7 @@
       loadedImageUrls.forEach((url, index) => {
         const slot = document.createElement('div');
         slot.className = `keepsake-slot keepsake-slot-${index + 1} ${index === activeSlotIndex ? 'selected' : ''}`;
-        slot.onclick = () => selectSlot(index);
+        slot.addEventListener('pointerdown', (e) => startDragPhoto(e, index));
 
         const img = document.createElement('img');
         img.id = `keepsakeImg_${index}`;
@@ -1096,6 +1311,38 @@
       });
     }
 
+    /* GESER FOTO DENGAN DRAG (MOUSE & SENTUHAN) */
+    let dragState = null;
+
+    function startDragPhoto(e, index) {
+      selectSlot(index);
+      const t = photoTransforms[index];
+      dragState = { index, startX: e.clientX, startY: e.clientY, origX: t.x, origY: t.y };
+      const img = document.getElementById(`keepsakeImg_${index}`);
+      if (img) img.style.transition = 'none';
+      e.currentTarget.style.cursor = 'grabbing';
+      e.preventDefault();
+    }
+
+    window.addEventListener('pointermove', (e) => {
+      if (!dragState) return;
+      const t = photoTransforms[dragState.index];
+      t.x = dragState.origX + (e.clientX - dragState.startX);
+      t.y = dragState.origY + (e.clientY - dragState.startY);
+      const img = document.getElementById(`keepsakeImg_${dragState.index}`);
+      if (img) applyTransformToImg(img, t);
+    });
+
+    function endDragPhoto() {
+      if (!dragState) return;
+      const img = document.getElementById(`keepsakeImg_${dragState.index}`);
+      if (img) img.style.transition = '';
+      document.querySelectorAll('.keepsake-slot').forEach(s => s.style.cursor = '');
+      dragState = null;
+    }
+    window.addEventListener('pointerup', endDragPhoto);
+    window.addEventListener('pointercancel', endDragPhoto);
+
     /* KONTROL GESER & ZOOM FOTO */
     function movePhoto(direction) {
       const step = 4;
@@ -1119,7 +1366,7 @@
     }
 
     function applyTransformToImg(imgElement, transformObj) {
-      imgElement.style.transform = `translate(${transformObj.x}px, ${transformObj.y}px) scale(${transformObj.scale})`;
+      imgElement.style.transform = `translate(${transformObj.x}px, calc(-50% + ${transformObj.y}px)) scale(${transformObj.scale})`;
     }
 
     /* FIX DOWNLOAD HIGH-RESOLUTION ANTI-RENYEK & ANTI-GEPENG */
@@ -1132,17 +1379,18 @@
       const slotImages = frameWrapper.querySelectorAll('.keepsake-slot img');
       const tempCanvases = [];
 
-      // Konversi object-fit: cover menggunakan resolusi asli foto agar hasil download super tajam
+      // Konversi object-fit: contain (foto utuh, tanpa crop) menggunakan resolusi asli foto agar hasil download super tajam
       const convertPromises = Array.from(slotImages).map((img) => {
         return new Promise((resolve) => {
-          const rect = img.getBoundingClientRect();
+          const rect = { width: img.offsetWidth, height: img.offsetHeight };
           const image = new Image();
           image.crossOrigin = 'anonymous';
           
           image.onload = () => {
-            // Gunakan resolusi tinggi (minimal 1200px lebar slot)
-            const highResWidth = Math.max(rect.width * 4, 1200);
-            const highResHeight = Math.max(rect.height * 4, 900);
+            // Gunakan resolusi asli foto (maks 2400px) dengan proporsi tetap
+            const downScale = Math.min(1, 2400 / Math.max(image.naturalWidth, image.naturalHeight));
+            const highResWidth = Math.round(image.naturalWidth * downScale);
+            const highResHeight = Math.round(image.naturalHeight * downScale);
 
             const canvas = document.createElement('canvas');
             canvas.width = highResWidth;
@@ -1151,7 +1399,7 @@
 
             const hRatio = canvas.width / image.naturalWidth;
             const vRatio = canvas.height / image.naturalHeight;
-            const ratio = Math.max(hRatio, vRatio);
+            const ratio = Math.min(hRatio, vRatio);
             const centerShift_x = (canvas.width - image.naturalWidth * ratio) / 2;
             const centerShift_y = (canvas.height - image.naturalHeight * ratio) / 2;
 
@@ -1179,7 +1427,7 @@
         }).then((canvas) => {
           // Kembalikan gambar ke tampilan awal
           tempCanvases.forEach(img => {
-            img.style.objectFit = 'cover';
+            img.style.objectFit = '';
             if (img.dataset.origSrc) {
               img.src = img.dataset.origSrc;
             }
@@ -1211,7 +1459,7 @@
           }, 'image/png', 1.0);
         }).catch((err) => {
           tempCanvases.forEach(img => {
-            img.style.objectFit = 'cover';
+            img.style.objectFit = '';
             if (img.dataset.origSrc) {
               img.src = img.dataset.origSrc;
             }
