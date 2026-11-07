@@ -520,9 +520,21 @@
 
     /* OUTLINE PINK DILUAR FOTO */
     .keepsake-slot.selected {
-      outline: 3px solid #EB5289 !important;
-      outline-offset: -5px !important;
       z-index: 20;
+    }
+
+    .keepsake-slot.selected::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      border: 3px solid #EB5289;
+      border-radius: inherit;
+      box-sizing: border-box;
+      pointer-events: none;
+      z-index: 5;
     }
 
     .keepsake-slot img {
