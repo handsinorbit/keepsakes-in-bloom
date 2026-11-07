@@ -514,16 +514,38 @@
       transition: outline 0.15s ease, outline-offset 0.15s ease;
     }
 
-    .keepsake-slot-1 { top: var(--s1-top, 11.84%); left: var(--s1-left, 21.96%); width: var(--s1-width, 62.52%); padding-top: var(--s1-h, 47.29%); border-radius: var(--s1-radius, 5% / 6.5%); }
-    .keepsake-slot-2 { top: var(--s2-top, 38.11%); left: var(--s2-left, 20.98%); width: var(--s2-width, 65.45%); padding-top: var(--s2-h, 65.45%); border-radius: var(--s2-radius, 50%); }
-    .keepsake-slot-3 { top: var(--s3-top, 69.62%); left: var(--s3-left, 20.4%); width: var(--s3-width, 66.82%); padding-top: var(--s3-h, 49.05%); border-radius: var(--s3-radius, 5% / 6.5%); }
+    .keepsake-slot-1, .keepsake-ring-1 { top: var(--s1-top, 9.65%); left: var(--s1-left, 8.62%); width: var(--s1-width, 83.05%); padding-top: var(--s1-h, 54.56%); }
+    .keepsake-slot-2, .keepsake-ring-2 { top: var(--s2-top, 31.48%); left: var(--s2-left, 11.75%); width: var(--s2-width, 77.92%); padding-top: var(--s2-h, 77.35%); }
+    .keepsake-slot-3, .keepsake-ring-3 { top: var(--s3-top, 61.32%); left: var(--s3-left, 10.33%); width: var(--s3-width, 79.35%); padding-top: var(--s3-h, 50.57%); }
+    .keepsake-ring-1 { border-radius: var(--s1-radius, 3% / 4%); }
+    .keepsake-ring-2 { border-radius: var(--s2-radius, 50%); }
+    .keepsake-ring-3 { border-radius: var(--s3-radius, 3% / 4%); }
 
     /* OUTLINE PINK DILUAR FOTO */
     .keepsake-slot.selected {
       z-index: 20;
     }
 
-    .keepsake-slot.selected::after {
+    .keepsake-ring-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .keepsake-ring {
+      position: absolute;
+      height: 0;
+      display: none;
+      box-sizing: border-box;
+    }
+
+    .keepsake-ring.on { display: block; }
+
+    .keepsake-ring::after {
       content: '';
       position: absolute;
       top: 2px;
@@ -533,8 +555,6 @@
       border: 3px solid #EB5289;
       border-radius: inherit;
       box-sizing: border-box;
-      pointer-events: none;
-      z-index: 5;
     }
 
     .keepsake-slot img {
@@ -549,51 +569,6 @@
       user-select: none;
       pointer-events: none;
       -webkit-user-select: none;
-    }
-
-    /* PILIHAN FRAME */
-    .frame-choice-section {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .frame-choice-title {
-      font-family: 'Mansalva', cursive;
-      font-size: 1.2rem;
-      color: #2b1e23;
-      margin-bottom: 8px;
-    }
-
-    .frame-choice-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .frame-btn {
-      background: #ffffff;
-      color: #5c3545;
-      border: 1.5px solid #ebd4db;
-      min-width: 120px;
-      height: 40px;
-      padding: 0 18px;
-      border-radius: 22px;
-      font-family: 'Delicious Handrawn', cursive;
-      font-size: 1.2rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: all 0.2s ease;
-    }
-
-    .frame-btn:hover {
-      background: #f7ebf0;
-    }
-
-    .frame-btn.active {
-      background: #EB5289;
-      color: #ffffff;
-      border-color: #EB5289;
     }
 
     /* KONTROL NAVIGATOR (D-PAD & ZOOM CUTE PASTEL PINK) */
@@ -833,9 +808,6 @@
       .dpad-center { top: 28px; left: 28px; }
 
       .btn-zoom { padding: 4px 10px; font-size: 0.88rem; }
-
-      .frame-choice-title { font-size: 1rem; }
-      .frame-btn { min-width: 100px; height: 36px; font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -914,12 +886,6 @@
         <p>Click photo to adjust position & zoom ✨</p>
       </div>
 
-      <!-- PILIHAN FRAME -->
-      <div class="frame-choice-section">
-        <div class="frame-choice-title">Choose Your Frame</div>
-        <div id="frameChoiceButtons" class="frame-choice-buttons"></div>
-      </div>
-
       <!-- KANVAS FRAME KEEPSAKE PRESISI -->
       <div id="keepsakeCardToDownload" class="keepsake-frame-wrapper">
         <img id="keepsakeFrameImg" class="keepsake-frame-bg" crossorigin="anonymous" alt="Frame Custom">
@@ -927,7 +893,13 @@
           <!-- 3 Slot Foto Disuntikkan Secara Otomatis -->
         </div>
         <!-- Frame lapisan atas (lubang transparan) agar hiasan frame tidak tertutup foto -->
-        <img id="keepsakeFrameTop" class="keepsake-frame-top" alt="">
+        <img id="keepsakeFrameTop" class="keepsake-frame-top" crossorigin="anonymous" alt="">
+        <!-- Penanda foto terpilih (di atas frame, tidak ikut ter-download) -->
+        <div class="keepsake-ring-layer">
+          <div class="keepsake-ring keepsake-ring-1"></div>
+          <div class="keepsake-ring keepsake-ring-2"></div>
+          <div class="keepsake-ring keepsake-ring-3"></div>
+        </div>
       </div>
 
       <!-- D-PAD & ZOOM NAVIGATOR CONTROL -->
@@ -983,21 +955,13 @@
        ======================================================== */
     const framesList = [
       {
-        name: 'Frame 1',
-        src: 'https://lh3.googleusercontent.com/d/1BcnPMfv6Z2XK-Mc5TfoCmE4yjpnATGz1',
+        name: 'Frame',
+        src: 'https://lh3.googleusercontent.com/d/1fzDnB6t3-8ntshKbFuVRSJwWa8UvCNxW=s0',
+        fallback: 'https://lh3.googleusercontent.com/d/1fzDnB6t3-8ntshKbFuVRSJwWa8UvCNxW',
         slots: [
-          { top: '11.84%', left: '21.96%', width: '62.52%', h: '47.29%', radius: '5% / 6.5%' },
-          { top: '38.11%', left: '20.98%', width: '65.45%', h: '65.45%', radius: '50%' },
-          { top: '69.62%', left: '20.4%',  width: '66.82%', h: '49.05%', radius: '5% / 6.5%' }
-        ]
-      },
-      {
-        name: 'Frame 2',
-        src: 'https://lh3.googleusercontent.com/d/19vs9Q8LylLoVNtcZIoCHD-DRgPBbJs0N',
-        slots: [
-          { top: '11.85%', left: '22%',    width: '62.45%', h: '47.38%', radius: '5% / 6.5%' },
-          { top: '38.14%', left: '21.03%', width: '65.38%', h: '65.38%', radius: '50%' },
-          { top: '69.59%', left: '20.44%', width: '66.95%', h: '49.14%', radius: '5% / 6.5%' }
+          { top: '9.65%',  left: '8.62%',  width: '83.05%', h: '54.56%', radius: '3% / 4%' },
+          { top: '31.48%', left: '11.75%', width: '77.92%', h: '77.35%', radius: '50%' },
+          { top: '61.32%', left: '10.33%', width: '79.35%', h: '50.57%', radius: '3% / 4%' }
         ]
       }
     ];
@@ -1166,20 +1130,6 @@
       });
     }
 
-    /* PILIHAN FRAME */
-    function buildFrameButtons() {
-      const box = document.getElementById('frameChoiceButtons');
-      box.innerHTML = '';
-      framesList.forEach((frame, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'frame-btn';
-        btn.innerText = frame.name;
-        btn.onclick = () => selectFrame(i);
-        box.appendChild(btn);
-      });
-    }
-
     /* Lapisan frame di atas foto: lubang foto dibuat transparan,
        sehingga hiasan di tepi lubang (karakter, apel, dll) tetap tampil di depan foto */
     const frameOverlayCache = {};
@@ -1195,65 +1145,87 @@
       }
       if (!frameImg.naturalWidth) return;
 
-      try {
-        const MAX_W = 2000;
-        const k = Math.min(1, MAX_W / frameImg.naturalWidth);
-        const W = Math.round(frameImg.naturalWidth * k);
-        const H = Math.round(frameImg.naturalHeight * k);
+      const NW = frameImg.naturalWidth;
+      const NH = frameImg.naturalHeight;
+      const useRaw = () => { topImg.src = frameImg.currentSrc || frameImg.src; };
 
-        const c = document.createElement('canvas');
-        c.width = W;
-        c.height = H;
-        const ctx = c.getContext('2d');
-        ctx.drawImage(frameImg, 0, 0, W, H);
-        const imgData = ctx.getImageData(0, 0, W, H);
-        const px = imgData.data;
+      try {
+        // Frame sangat besar: pakai frame apa adanya (lubang sudah transparan)
+        if (NW * NH > 24000000) { useRaw(); return; }
+
+        // 1) Mask lubang pada resolusi rendah (cepat)
+        const lw = Math.min(NW, 700);
+        const lh = Math.max(1, Math.round(NH * lw / NW));
+        const lc = document.createElement('canvas');
+        lc.width = lw;
+        lc.height = lh;
+        const lctx = lc.getContext('2d');
+        lctx.drawImage(frameImg, 0, 0, lw, lh);
+        const lpx = lctx.getImageData(0, 0, lw, lh).data;
 
         const isHole = (p) => {
           const i = p * 4;
-          if (px[i + 3] < 128) return true;
-          const r = px[i], g = px[i + 1], b = px[i + 2];
+          if (lpx[i + 3] < 128) return true;
+          const r = lpx[i], g = lpx[i + 1], b = lpx[i + 2];
           return Math.abs(r - 224) <= 20 && Math.abs(g - 224) <= 20 && Math.abs(b - 224) <= 20 &&
                  (Math.max(r, g, b) - Math.min(r, g, b)) <= 12;
         };
 
-        const visited = new Uint8Array(W * H);
+        const mask = new Uint8Array(lw * lh);
         frame.slots.forEach((sl) => {
-          const cx = Math.round((parseFloat(sl.left) + parseFloat(sl.width) / 2) / 100 * W);
-          const cy = Math.round(parseFloat(sl.top) / 100 * H + parseFloat(sl.h) / 200 * W);
-          if (cx < 0 || cy < 0 || cx >= W || cy >= H) return;
-          const start = cy * W + cx;
-          if (visited[start] || !isHole(start)) return;
+          const cx = Math.round((parseFloat(sl.left) + parseFloat(sl.width) / 2) / 100 * lw);
+          const cy = Math.round(parseFloat(sl.top) / 100 * lh + parseFloat(sl.h) / 200 * lw);
+          if (cx < 0 || cy < 0 || cx >= lw || cy >= lh) return;
+          const start = cy * lw + cx;
+          if (mask[start] || !isHole(start)) return;
 
           const stack = [start];
-          visited[start] = 1;
+          mask[start] = 1;
           while (stack.length) {
             const cur = stack.pop();
-            const x = cur % W;
-            const y = (cur - x) / W;
-            if (x > 0 && !visited[cur - 1] && isHole(cur - 1)) { visited[cur - 1] = 1; stack.push(cur - 1); }
-            if (x < W - 1 && !visited[cur + 1] && isHole(cur + 1)) { visited[cur + 1] = 1; stack.push(cur + 1); }
-            if (y > 0 && !visited[cur - W] && isHole(cur - W)) { visited[cur - W] = 1; stack.push(cur - W); }
-            if (y < H - 1 && !visited[cur + W] && isHole(cur + W)) { visited[cur + W] = 1; stack.push(cur + W); }
+            const x = cur % lw;
+            const y = (cur - x) / lw;
+            if (x > 0 && !mask[cur - 1] && isHole(cur - 1)) { mask[cur - 1] = 1; stack.push(cur - 1); }
+            if (x < lw - 1 && !mask[cur + 1] && isHole(cur + 1)) { mask[cur + 1] = 1; stack.push(cur + 1); }
+            if (y > 0 && !mask[cur - lw] && isHole(cur - lw)) { mask[cur - lw] = 1; stack.push(cur - lw); }
+            if (y < lh - 1 && !mask[cur + lw] && isHole(cur + lw)) { mask[cur + lw] = 1; stack.push(cur + lw); }
           }
         });
 
-        for (let p = 0; p < W * H; p++) {
-          if (visited[p]) px[p * 4 + 3] = 0;
+        // 2) Terapkan ke frame resolusi penuh (kualitas HD tetap terjaga)
+        const c = document.createElement('canvas');
+        c.width = NW;
+        c.height = NH;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(frameImg, 0, 0);
+        const fd = ctx.getImageData(0, 0, NW, NH);
+        const d = fd.data;
+
+        for (let y = 0; y < NH; y++) {
+          const my = Math.min(lh - 1, Math.floor(y * lh / NH));
+          const rowBase = y * NW;
+          for (let x = 0; x < NW; x++) {
+            const mx = Math.min(lw - 1, Math.floor(x * lw / NW));
+            if (!mask[my * lw + mx]) continue;
+            const i = (rowBase + x) * 4;
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            if (d[i + 3] < 230 || (Math.abs(r - 224) <= 20 && Math.abs(g - 224) <= 20 && Math.abs(b - 224) <= 20 &&
+                (Math.max(r, g, b) - Math.min(r, g, b)) <= 12)) {
+              d[i + 3] = 0;
+            }
+          }
         }
-        ctx.putImageData(imgData, 0, 0);
+        ctx.putImageData(fd, 0, 0);
 
-        frameOverlayCache[index] = c.toDataURL('image/png');
-        topImg.src = frameOverlayCache[index];
+        c.toBlob((blob) => {
+          if (!blob) { useRaw(); return; }
+          frameOverlayCache[index] = URL.createObjectURL(blob);
+          if (index === currentFrameIndex) topImg.src = frameOverlayCache[index];
+        }, 'image/png');
       } catch (err) {
-        // Jika frame tidak bisa diproses, tampilan kembali seperti biasa (tanpa lapisan atas)
-        topImg.removeAttribute('src');
+        // Jika frame tidak bisa diproses, pakai frame apa adanya sebagai lapisan atas
+        useRaw();
       }
-    }
-
-    function selectFrame(index) {
-      currentFrameIndex = index;
-      applyFrame();
     }
 
     function applyFrame() {
@@ -1277,14 +1249,14 @@
         wrapper.style.setProperty(`--s${n}-h`, sl.h);
         wrapper.style.setProperty(`--s${n}-radius`, sl.radius);
       });
-
-      document.querySelectorAll('.frame-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === currentFrameIndex);
-      });
     }
 
     document.getElementById('keepsakeFrameImg').addEventListener('load', () => buildFrameOverlay(currentFrameIndex));
-    buildFrameButtons();
+    document.getElementById('keepsakeFrameImg').addEventListener('error', () => {
+      const f = framesList[currentFrameIndex];
+      const el = document.getElementById('keepsakeFrameImg');
+      if (f.fallback && el.getAttribute('src') !== f.fallback) el.src = f.fallback;
+    });
     applyFrame();
 
     /* HALAMAN 3 GENERATE & SELECT SLOT */
@@ -1309,6 +1281,7 @@
         slotContainer.appendChild(slot);
       });
 
+      selectSlot(activeSlotIndex);
       goToStep(3);
     }
 
@@ -1320,6 +1293,9 @@
         } else {
           slot.classList.remove('selected');
         }
+      });
+      document.querySelectorAll('.keepsake-ring').forEach((ring, i) => {
+        ring.classList.toggle('on', i === activeSlotIndex);
       });
     }
 
@@ -1387,6 +1363,14 @@
 
       // Hapus outline seleksi pink
       document.querySelectorAll('.keepsake-slot').forEach(slot => slot.classList.remove('selected'));
+      document.querySelectorAll('.keepsake-ring').forEach(ring => ring.classList.remove('on'));
+
+      // Resolusi HD: ikuti resolusi asli frame (minimal 1600px lebar), dibatasi agar aman di HP
+      const frameNatW = document.getElementById('keepsakeFrameImg').naturalWidth || 1080;
+      const wrapAspect = frameWrapper.offsetHeight / frameWrapper.offsetWidth;
+      const maxTargetW = Math.floor(Math.sqrt(16000000 / wrapAspect));
+      const targetW = Math.min(Math.max(frameNatW, 1600), maxTargetW);
+      const exportScale = targetW / frameWrapper.offsetWidth;
 
       const slotImages = frameWrapper.querySelectorAll('.keepsake-slot img');
       const tempCanvases = [];
@@ -1434,7 +1418,7 @@
       Promise.all(convertPromises).then(() => {
         html2canvas(frameWrapper, {
           useCORS: true,
-          scale: 3,
+          scale: exportScale,
           backgroundColor: null
         }).then((canvas) => {
           // Kembalikan gambar ke tampilan awal
